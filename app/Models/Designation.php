@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Employee;
 
 class Designation extends Model
 {
@@ -11,4 +12,9 @@ class Designation extends Model
         'description',
         'status',
     ];
+
+    public function employees()
+{
+    return $this->hasMany(Employee::class);
+}
 }

@@ -25,6 +25,7 @@ return new class extends Migration
     $table->text('address')->nullable();
     $table->enum('status', ['active', 'inactive'])->default('active');
     $table->timestamps();
+     
         });
     }
 

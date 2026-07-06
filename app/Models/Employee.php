@@ -5,9 +5,11 @@ namespace App\Models;
 use App\Models\Department;
 use App\Models\Designation;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Employee extends Model
 {
+      use SoftDeletes;
      protected $fillable = [
         'employee_code',
         'first_name',
