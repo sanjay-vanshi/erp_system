@@ -35,5 +35,20 @@ public function designation()
 {
     return $this->belongsTo(Designation::class);
 }
+/**
+ * Employee has many attendance records.
+ */
+public function attendances()
+{
+    return $this->hasMany(Attendance::class);
+}
+/**
+ * Employee has many leaves records.
+ */
+public function leaves()
+{
+    return $this->hasMany(Leave::class);
+}
+
 
 }

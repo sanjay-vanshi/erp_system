@@ -23,6 +23,13 @@
         <a href="/departments" class="text-white d-block mb-2">Departments</a>
         <a href="/designations" class="text-white d-block mb-2">Designations</a>
         <a href="/employees" class="text-white d-block mb-2">Employees</a>
+         <a href="{{ route('attendances.index') }}" class="nav-link">Attendance</a>
+           <a href="{{ route('leaves.index') }}"
+       class="nav-link">
+
+        Leave Management
+
+    </a>
 
     </div>
 
