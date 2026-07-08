@@ -24,18 +24,18 @@ class UpdateDepartmentRequest extends FormRequest
     public function rules(): array
     {
         return [
-             'name' => 'required|string|max:100|regex:/^[A-Za-z\s&]+$/',
+            'name' => 'required|string|max:100|regex:/^[A-Za-z\s&]+$/',
 
-        'code' => [
-            'required',
-            'string',
-            'max:20',
-            Rule::unique('departments', 'code')->ignore($this->department),
-        ],
+            'code' => [
+                'required',
+                'string',
+                'max:20',
+                Rule::unique('departments', 'code')->ignore($this->department),
+            ],
 
-        'description' => 'nullable|string',
+            'description' => 'nullable|string',
 
-        'status' => 'required|boolean',
+            'status' => 'required|boolean',
         ];
     }
 }

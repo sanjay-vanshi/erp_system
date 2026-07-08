@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\DepartmentRequest;
 use App\Http\Requests\StoreDepartmentRequest;
 use App\Http\Requests\UpdateDepartmentRequest;
 use App\Models\Department;
@@ -13,29 +12,29 @@ class DepartmentController extends Controller
     /**
      * Display a listing of the resource.
      */
-   public function index(Request $request)
-{
-    $query = Department::query();
+    public function index(Request $request)
+    {
+        $query = Department::query();
 
-    if ($request->search) {
+        if ($request->search) {
 
-        $query->where('name', 'like', '%' . $request->search . '%')
-              ->orWhere('code', 'like', '%' . $request->search . '%');
+            $query->where('name', 'like', '%'.$request->search.'%')
+                ->orWhere('code', 'like', '%'.$request->search.'%');
+        }
+
+        $departments = $query->orderBy('id', 'DESC')
+            ->paginate(10)
+            ->withQueryString();
+
+        return view('departments.index', compact('departments'));
     }
-
-    $departments = $query->orderBy('id', 'DESC')
-                         ->paginate(10)
-                         ->withQueryString();
-
-    return view('departments.index', compact('departments'));
-}
 
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-         return view('departments.create');
+        return view('departments.create');
     }
 
     /**
@@ -45,9 +44,9 @@ class DepartmentController extends Controller
     {
         Department::create($request->validated());
 
-    return redirect()
-        ->route('departments.index')
-        ->with('success', 'Department created successfully.');
+        return redirect()
+            ->route('departments.index')
+            ->with('success', 'Department created successfully.');
     }
 
     /**
@@ -72,9 +71,10 @@ class DepartmentController extends Controller
     public function update(UpdateDepartmentRequest $request, Department $department)
     {
         $department->update($request->validated());
+
         return redirect()
-        ->route('departments.index')
-        ->with('success', 'Department updated successfully!');
+            ->route('departments.index')
+            ->with('success', 'Department updated successfully!');
 
     }
 
@@ -83,10 +83,10 @@ class DepartmentController extends Controller
      */
     public function destroy(Department $department)
     {
-         $department->delete();
+        $department->delete();
 
-    return redirect()
-        ->route('departments.index')
-        ->with('success', 'Department deleted successfully!');
+        return redirect()
+            ->route('departments.index')
+            ->with('success', 'Department deleted successfully!');
     }
 }

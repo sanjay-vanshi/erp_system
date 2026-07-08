@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Employee;
 use Illuminate\Database\Eloquent\Model;
 
 class Department extends Model
@@ -13,9 +12,10 @@ class Department extends Model
         'description',
         'status',
     ];
+
     // create relation 1:M with employees
     public function employees()
-{
-    return $this->hasMany(Employee::class);
-}
+    {
+        return $this->hasMany(Employee::class);
+    }
 }

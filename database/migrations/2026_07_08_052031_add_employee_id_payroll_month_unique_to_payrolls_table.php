@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('employees', function (Blueprint $table) {
-            $table->softDeletes();
+        Schema::table('payrolls', function (Blueprint $table) {
+            $table->unique(['employee_id', 'payroll_month']);
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('employees', function (Blueprint $table) {
-            $table->dropSoftDeletes();
+        Schema::table('payrolls', function (Blueprint $table) {
+            $table->dropUnique(['employee_id', 'payroll_month']);
         });
     }
 };

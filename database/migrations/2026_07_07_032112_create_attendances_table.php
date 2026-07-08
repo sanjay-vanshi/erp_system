@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('attendances', function (Blueprint $table) {
             $table->id();
             $table->foreignId('employee_id')
-                  ->constrained()
-                  ->cascadeOnDelete();
+                ->constrained()
+                ->cascadeOnDelete();
             $table->date('attendance_date');
             $table->time('check_in')->nullable();
             $table->time('check_out')->nullable();
@@ -24,7 +24,7 @@ return new class extends Migration
                 'absent',
                 'leave',
                 'half_day',
-    ])->default('present');
+            ])->default('present');
             $table->text('remarks')->nullable();
             $table->unique(['employee_id', 'attendance_date']);
             $table->timestamps();

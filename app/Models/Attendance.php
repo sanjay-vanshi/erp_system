@@ -16,7 +16,8 @@ class Attendance extends Model
         'remarks',
 
     ];
-     /**
+
+    /**
      * Attendance belongs to an Employee.
      */
     public function employee()

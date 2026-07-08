@@ -12,44 +12,43 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('leaves', function (Blueprint $table) {
-             $table->id();
+            $table->id();
 
-        $table->foreignId('employee_id')
-              ->constrained()
-              ->cascadeOnDelete();
+            $table->foreignId('employee_id')
+                ->constrained()
+                ->cascadeOnDelete();
 
-        $table->enum('leave_type', [
-            'sick',
-            'casual',
-            'paid',
-            'emergency'
-        ]);
+            $table->enum('leave_type', [
+                'sick',
+                'casual',
+                'paid',
+                'emergency',
+            ]);
 
-        $table->date('from_date');
+            $table->date('from_date');
 
-        $table->date('to_date');
+            $table->date('to_date');
 
-        $table->integer('total_days');
+            $table->integer('total_days');
 
-        $table->text('reason')
-              ->nullable();
+            $table->text('reason')
+                ->nullable();
 
-        $table->enum('status', [
-            'pending',
-            'approved',
-            'rejected'
-        ])->default('pending');
+            $table->enum('status', [
+                'pending',
+                'approved',
+                'rejected',
+            ])->default('pending');
 
-        $table->foreignId('approved_by')
-              ->nullable()
-              ->constrained('users')
-              ->nullOnDelete();
+            $table->foreignId('approved_by')
+                ->nullable()
+                ->constrained('users')
+                ->nullOnDelete();
 
-        $table->text('remarks')
-              ->nullable();
+            $table->text('remarks')
+                ->nullable();
 
-        $table->timestamps();
-
+            $table->timestamps();
 
         });
     }

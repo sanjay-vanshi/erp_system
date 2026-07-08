@@ -17,22 +17,20 @@
 
         </div>
 
-        <div class="col-md-2">
+    
 
-            <button class="btn btn-primary">
-                Search
-            </button>
+            <div class="d-flex gap-2 col-md-4">
+    <button class="btn btn-primary">
+        Search
+    </button>
 
-        </div>
+    <a href="{{ route('departments.index') }}"
+       class="btn btn-secondary">
+        Reset
+    </a>
+</div>
 
-        <div class="col-md-2">
-
-            <a href="{{ route('departments.index') }}"
-               class="btn btn-secondary">
-                Reset
-            </a>
-
-        </div>
+        
 
     </div>
 

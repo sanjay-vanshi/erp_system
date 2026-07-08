@@ -22,25 +22,22 @@ class StoreLeaveRequest extends FormRequest
      */
     public function rules(): array
     {
-       return [
+        return [
 
             'employee_id' => [
                 'required',
                 'exists:employees,id',
             ],
 
-
             'leave_type' => [
                 'required',
                 'in:sick,casual,paid,emergency',
             ],
 
-
             'from_date' => [
                 'required',
                 'date',
             ],
-
 
             'to_date' => [
                 'required',
@@ -48,7 +45,7 @@ class StoreLeaveRequest extends FormRequest
                 'after_or_equal:from_date',
             ],
 
-             'reason' => [
+            'reason' => [
                 'nullable',
                 'string',
                 'max:500',

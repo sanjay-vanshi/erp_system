@@ -18,7 +18,6 @@ class LeaveController extends Controller
     {
         $query = Leave::with('employee');
 
-
         // Search
         if ($request->search) {
 
@@ -26,28 +25,27 @@ class LeaveController extends Controller
 
                 $q->whereHas('employee', function ($employee) use ($request) {
 
-                    $employee->where('employee_code', 'like', '%' . $request->search . '%')
-                             ->orWhere('first_name', 'like', '%' . $request->search . '%')
-                             ->orWhere('last_name', 'like', '%' . $request->search . '%');
+                    $employee->where('employee_code', 'like', '%'.$request->search.'%')
+                        ->orWhere('first_name', 'like', '%'.$request->search.'%')
+                        ->orWhere('last_name', 'like', '%'.$request->search.'%');
 
                 })
-                ->orWhere('leave_type', 'like', '%' . $request->search . '%')
-                ->orWhere('status', 'like', '%' . $request->search . '%');
+                    ->orWhere('leave_type', 'like', '%'.$request->search.'%')
+                    ->orWhere('status', 'like', '%'.$request->search.'%');
 
             });
         }
- 
+
         // Status Filter
-if ($request->status) {
+        if ($request->status) {
 
-    $query->where('status', $request->status);
+            $query->where('status', $request->status);
 
-}
+        }
 
         $leaves = $query->orderBy('id', 'DESC')
-                        ->paginate(10)
-                        ->withQueryString();
-
+            ->paginate(10)
+            ->withQueryString();
 
         return view('leaves.index', compact('leaves'));
     }
@@ -68,62 +66,60 @@ if ($request->status) {
     public function store(StoreLeaveRequest $request)
     {
 
+        $totalDays = Carbon::parse($request->from_date)
+            ->diffInDays(Carbon::parse($request->to_date)) + 1;
+        Leave::create([
 
-    $totalDays = Carbon::parse($request->from_date)
-    ->diffInDays(Carbon::parse($request->to_date)) + 1;
-         Leave::create([
+            'employee_id' => $request->employee_id,
 
-        'employee_id' => $request->employee_id,
+            'leave_type' => $request->leave_type,
 
-        'leave_type' => $request->leave_type,
+            'from_date' => $request->from_date,
 
-        'from_date' => $request->from_date,
+            'to_date' => $request->to_date,
 
-        'to_date' => $request->to_date,
+            'total_days' => $totalDays,
 
-        'total_days' => $totalDays,
+            'reason' => $request->reason,
 
-        'reason' => $request->reason,
+            'status' => 'pending',
 
-        'status' => 'pending',
+        ]);
 
-    ]);
-
-
-    return redirect()
-        ->route('leaves.index')
-        ->with('success', 'Leave request submitted successfully.');
+        return redirect()
+            ->route('leaves.index')
+            ->with('success', 'Leave request submitted successfully.');
     }
 
     /**
      * Display the specified resource.
      */
     public function show(Leave $leaf)
-{
-    $leaf->load([
-        'employee.department',
-        'employee.designation',
-        'approver'
-    ]);
+    {
+        $leaf->load([
+            'employee.department',
+            'employee.designation',
+            'approver',
+        ]);
 
-    return view('leaves.show', [
-        'leave' => $leaf
-    ]);
-}
+        return view('leaves.show', [
+            'leave' => $leaf,
+        ]);
+    }
 
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(Leave $leaf)
-{
-    
-    $employees = Employee::orderBy('first_name')->get();
+    {
 
-    return view('leaves.edit',[
-        'leave'=> $leaf,
-        'employees'=> $employees
-    ]);
-}
+        $employees = Employee::orderBy('first_name')->get();
+
+        return view('leaves.edit', [
+            'leave' => $leaf,
+            'employees' => $employees,
+        ]);
+    }
 
     /**
      * Update the specified resource in storage.
@@ -132,83 +128,76 @@ if ($request->status) {
     {
         $leaf->update([
 
-        'employee_id' => $request->employee_id,
+            'employee_id' => $request->employee_id,
 
-        'leave_type' => $request->leave_type,
+            'leave_type' => $request->leave_type,
 
-        'from_date' => $request->from_date,
+            'from_date' => $request->from_date,
 
-        'to_date' => $request->to_date,
+            'to_date' => $request->to_date,
 
-        'total_days' => $request->total_days,
+            'total_days' => $request->total_days,
 
-        'reason' => $request->reason,
+            'reason' => $request->reason,
 
-        'status' => $request->status,
+            'status' => $request->status,
 
-        'remarks' => $request->remarks,
+            'remarks' => $request->remarks,
 
-    ]);
+        ]);
 
-
-    return redirect()
-        ->route('leaves.index')
-        ->with('success', 'Leave updated successfully.');
+        return redirect()
+            ->route('leaves.index')
+            ->with('success', 'Leave updated successfully.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-   public function destroy(Leave $leave)
-{
-    $leave->delete();
+    public function destroy(Leave $leave)
+    {
+        $leave->delete();
 
-    return redirect()
-        ->route('leaves.index')
-        ->with('success', 'Leave deleted successfully.');
-}
-// here all method for leave approved or reject or panding 
-public function approve(Leave $leaf)
-{
-    $leaf->update([
-        'status' => 'approved',
-        'approved_by' => auth()->id(),
-    ]);
+        return redirect()
+            ->route('leaves.index')
+            ->with('success', 'Leave deleted successfully.');
+    }
 
+    // here all method for leave approved or reject or panding
+    public function approve(Leave $leaf)
+    {
+        $leaf->update([
+            'status' => 'approved',
+            'approved_by' => auth()->id(),
+        ]);
 
-    return redirect()
-        ->route('leaves.index')
-        ->with('success', 'Leave approved successfully.');
-}
+        return redirect()
+            ->route('leaves.index')
+            ->with('success', 'Leave approved successfully.');
+    }
 
+    public function reject(Request $request, Leave $leaf)
+    {
+        $request->validate([
+            'remarks' => 'required|string|max:500',
+        ]);
 
+        $leaf->update([
+            'status' => 'rejected',
+            'approved_by' => auth()->id(),
+            'remarks' => $request->remarks,
+        ]);
 
-public function reject(Request $request, Leave $leaf)
-{
-    $request->validate([
-        'remarks' => 'required|string|max:500',
-    ]);
+        return redirect()
+            ->route('leaves.index')
+            ->with('success', 'Leave rejected successfully.');
+    }
 
-
-    $leaf->update([
-        'status' => 'rejected',
-        'approved_by' => auth()->id(),
-        'remarks' => $request->remarks,
-    ]);
-
-
-    return redirect()
-        ->route('leaves.index')
-        ->with('success', 'Leave rejected successfully.');
-}
-
-// reject form 
-public function rejectForm(Leave $leaf)
-{
-    return view('leaves.reject', [
-        'leave' => $leaf
-    ]);
-}
-
-
+    // reject form
+    public function rejectForm(Leave $leaf)
+    {
+        return view('leaves.reject', [
+            'leave' => $leaf,
+        ]);
+    }
 }

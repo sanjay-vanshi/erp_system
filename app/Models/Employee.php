@@ -2,15 +2,14 @@
 
 namespace App\Models;
 
-use App\Models\Department;
-use App\Models\Designation;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Employee extends Model
 {
-      use SoftDeletes;
-     protected $fillable = [
+    use SoftDeletes;
+
+    protected $fillable = [
         'employee_code',
         'first_name',
         'last_name',
@@ -27,28 +26,35 @@ class Employee extends Model
     // relationship with department....M:1
 
     public function department()
-{
-    return $this->belongsTo(Department::class);
-}
-// relationship with designation......M:1
-public function designation()
-{
-    return $this->belongsTo(Designation::class);
-}
-/**
- * Employee has many attendance records.
- */
-public function attendances()
-{
-    return $this->hasMany(Attendance::class);
-}
-/**
- * Employee has many leaves records.
- */
-public function leaves()
-{
-    return $this->hasMany(Leave::class);
-}
+    {
+        return $this->belongsTo(Department::class);
+    }
 
+    // relationship with designation......M:1
+    public function designation()
+    {
+        return $this->belongsTo(Designation::class);
+    }
 
+    /**
+     * Employee has many attendance records.
+     */
+    public function attendances()
+    {
+        return $this->hasMany(Attendance::class);
+    }
+
+    /**
+     * Employee has many leaves records.
+     */
+    public function leaves()
+    {
+        return $this->hasMany(Leave::class);
+    }
+
+    //  Employee has many payroll records.
+    public function payrolls()
+    {
+        return $this->hasMany(Payroll::class);
+    }
 }

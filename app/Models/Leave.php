@@ -19,14 +19,14 @@ class Leave extends Model
         'remarks',
 
     ];
-     /**
+
+    /**
      * Leave belongs to Employee
      */
     public function employee()
     {
         return $this->belongsTo(Employee::class);
     }
-
 
     /**
      * Leave approved by User
@@ -35,6 +35,4 @@ class Leave extends Model
     {
         return $this->belongsTo(User::class, 'approved_by');
     }
-
-
 }

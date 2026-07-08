@@ -12,11 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('designations', function (Blueprint $table) {
-    $table->id();
-    $table->string('title');
-    $table->text('description')->nullable();
-    $table->boolean('status')->default(true);
-    $table->timestamps();
+            $table->id();
+            $table->string('title');
+            $table->text('description')->nullable();
+            $table->boolean('status')->default(true);
+            $table->timestamps();
         });
     }
 

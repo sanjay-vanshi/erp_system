@@ -12,20 +12,20 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('employees', function (Blueprint $table) {
-    $table->id();
-    $table->string('employee_code')->unique();
-    $table->string('first_name');
-    $table->string('last_name');
-    $table->string('email')->unique();
-    $table->string('phone')->nullable();
-    $table->foreignId('department_id')->constrained()->cascadeOnDelete();
-    $table->foreignId('designation_id')->constrained()->cascadeOnDelete();
-    $table->decimal('salary', 10, 2)->default(0);
-    $table->date('joining_date');
-    $table->text('address')->nullable();
-    $table->enum('status', ['active', 'inactive'])->default('active');
-    $table->timestamps();
-     
+            $table->id();
+            $table->string('employee_code')->unique();
+            $table->string('first_name');
+            $table->string('last_name');
+            $table->string('email')->unique();
+            $table->string('phone')->nullable();
+            $table->foreignId('department_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('designation_id')->constrained()->cascadeOnDelete();
+            $table->decimal('salary', 10, 2)->default(0);
+            $table->date('joining_date');
+            $table->text('address')->nullable();
+            $table->enum('status', ['active', 'inactive'])->default('active');
+            $table->timestamps();
+
         });
     }
 

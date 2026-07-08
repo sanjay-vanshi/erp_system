@@ -12,24 +12,24 @@ class DesignationController extends Controller
     /**
      * Display a listing of the resource.
      */
-   public function index(Request $request)
-{
-    $query = Designation::query();
+    public function index(Request $request)
+    {
+        $query = Designation::query();
 
-    if ($request->search) {
+        if ($request->search) {
 
-        $query->where(function ($q) use ($request) {
-            $q->where('title', 'like', '%' . $request->search . '%')
-              ->orWhere('description', 'like', '%' . $request->search . '%');
-        });
+            $query->where(function ($q) use ($request) {
+                $q->where('title', 'like', '%'.$request->search.'%')
+                    ->orWhere('description', 'like', '%'.$request->search.'%');
+            });
+        }
+
+        $designations = $query->orderBy('id', 'DESC')
+            ->paginate(10)
+            ->withQueryString();
+
+        return view('designations.index', compact('designations'));
     }
-
-    $designations = $query->orderBy('id', 'DESC')
-                         ->paginate(10)
-                         ->withQueryString();
-
-    return view('designations.index', compact('designations'));
-}
 
     /**
      * Show the form for creating a new resource.
@@ -44,12 +44,12 @@ class DesignationController extends Controller
      */
     public function store(StoreDesignationRequest $request)
     {
-        
-    Designation::create($request->validated());
 
-    return redirect()
-        ->route('designations.index')
-        ->with('success', 'Designation created successfully.');
+        Designation::create($request->validated());
+
+        return redirect()
+            ->route('designations.index')
+            ->with('success', 'Designation created successfully.');
     }
 
     /**
@@ -71,23 +71,24 @@ class DesignationController extends Controller
     /**
      * Update the specified resource in storage.
      */
-   public function update(UpdateDesignationRequest $request, Designation $designation)
-{
-    $designation->update($request->validated());
+    public function update(UpdateDesignationRequest $request, Designation $designation)
+    {
+        $designation->update($request->validated());
 
-    return redirect()
-        ->route('designations.index')
-        ->with('success', 'Designation updated successfully.');
-}
+        return redirect()
+            ->route('designations.index')
+            ->with('success', 'Designation updated successfully.');
+    }
+
     /**
      * Remove the specified resource from storage.
      */
-   public function destroy(Designation $designation)
-{
-    $designation->delete();
+    public function destroy(Designation $designation)
+    {
+        $designation->delete();
 
-    return redirect()
-        ->route('designations.index')
-        ->with('success', 'Designation deleted successfully.');
-}
+        return redirect()
+            ->route('designations.index')
+            ->with('success', 'Designation deleted successfully.');
+    }
 }

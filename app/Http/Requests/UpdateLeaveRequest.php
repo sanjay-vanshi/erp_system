@@ -29,18 +29,15 @@ class UpdateLeaveRequest extends FormRequest
                 'exists:employees,id',
             ],
 
-
             'leave_type' => [
                 'required',
                 'in:sick,casual,paid,emergency',
             ],
 
-
             'from_date' => [
                 'required',
                 'date',
             ],
-
 
             'to_date' => [
                 'required',
@@ -48,13 +45,11 @@ class UpdateLeaveRequest extends FormRequest
                 'after_or_equal:from_date',
             ],
 
-
             'total_days' => [
                 'required',
                 'integer',
                 'min:1',
             ],
-
 
             'reason' => [
                 'nullable',
@@ -62,12 +57,10 @@ class UpdateLeaveRequest extends FormRequest
                 'max:500',
             ],
 
-
             'status' => [
                 'required',
                 'in:pending,approved,rejected',
             ],
-
 
             'remarks' => [
                 'nullable',

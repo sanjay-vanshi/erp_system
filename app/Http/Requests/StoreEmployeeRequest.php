@@ -22,22 +22,22 @@ class StoreEmployeeRequest extends FormRequest
      */
     public function rules(): array
     {
-         return [
+        return [
             'employee_code' => 'required|string|max:50|unique:employees,employee_code',
-            'first_name'    => 'required|string|max:100',
-            'last_name'     => 'required|string|max:100',
-            'email'         => 'required|email|unique:employees,email',
-            'phone'         => 'nullable|string|max:20',
+            'first_name' => 'required|string|max:100',
+            'last_name' => 'required|string|max:100',
+            'email' => 'required|email|unique:employees,email',
+            'phone' => 'nullable|string|max:20',
 
-            'department_id'  => 'required|exists:departments,id',
+            'department_id' => 'required|exists:departments,id',
             'designation_id' => 'required|exists:designations,id',
 
-            'salary'        => 'required|numeric|min:0',
-            'joining_date'  => 'required|date',
+            'salary' => 'required|numeric|min:0',
+            'joining_date' => 'required|date',
 
-            'address'       => 'nullable|string',
+            'address' => 'nullable|string',
 
-            'status'        => 'required|in:active,inactive',
+            'status' => 'required|in:active,inactive',
         ];
     }
 }

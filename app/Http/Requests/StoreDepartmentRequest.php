@@ -23,10 +23,10 @@ class StoreDepartmentRequest extends FormRequest
     public function rules(): array
     {
         return [
-        'name' => 'required|string|max:100|regex:/^[A-Za-z\s&]+$/',
-        'code' => 'required|string|max:20|unique:departments,code',
-        'description' => 'nullable|string',
-        'status' => 'required|boolean',
+            'name' => 'required|string|max:100|regex:/^[A-Za-z\s&]+$/',
+            'code' => 'required|string|max:20|unique:departments,code',
+            'description' => 'nullable|string',
+            'status' => 'required|boolean',
         ];
     }
 }
