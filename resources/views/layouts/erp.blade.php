@@ -19,14 +19,40 @@
 
         <h4 class="text-center mb-4">ERP System</h4>
 
-        <a href="/dashboard" class="text-white d-block mb-2">Dashboard</a>
-        <a href="/departments" class="text-white d-block mb-2">Departments</a>
-        <a href="/designations" class="text-white d-block mb-2">Designations</a>
-        <a href="/employees" class="text-white d-block mb-2">Employees</a>
-         <a href="{{ route('attendances.index') }}" class="nav-link">Attendance</a>
-           <a href="{{ route('leaves.index') }}"class="nav-link">Leave Management</a>
-           <a href="{{ route('payrolls.index') }}">Payrolls</a>
+        <a href="{{ route('dashboard') }}" class="text-white d-block mb-2">
+    🏠 Dashboard
+</a>
 
+<a href="{{ route('departments.index') }}" class="text-white d-block mb-2">
+    🏢 Departments
+</a>
+
+<a href="{{ route('designations.index') }}" class="text-white d-block mb-2">
+    💼 Designations
+</a>
+
+<a href="{{ route('employees.index') }}" class="text-white d-block mb-2">
+    👨‍💼 Employees
+</a>
+
+<a href="{{ route('attendances.index') }}" class="text-white d-block mb-2">
+    🕒 Attendance
+</a>
+
+<a href="{{ route('leaves.index') }}" class="text-white d-block mb-2">
+    📝 Leave Management
+</a>
+
+<a href="{{ route('payrolls.index') }}" class="text-white d-block mb-2">
+    💰 Payrolls
+</a>
+
+<a href="{{ route('roles.index') }}" class="text-white d-block mb-2">
+    🔐 Roles
+</a>
+<a href="{{ route('users.index') }}" class="text-white d-block mb-2">
+    👤 User Management
+</a>
     </div>
 
     <!-- Page Content -->

@@ -57,4 +57,9 @@ class Employee extends Model
     {
         return $this->hasMany(Payroll::class);
     }
+
+    public function user()
+    {
+        return $this->hasOne(User::class);
+    }
 }

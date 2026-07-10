@@ -1,3 +1,17 @@
+@if(!empty($payroll) && $payroll->exists)
+
+<form action="{{ route('payrolls.update', $payroll) }}" method="POST">
+    @method('PUT')
+
+@else
+
+<form action="{{ route('payrolls.store') }}" method="POST">
+
+@endif
+
+@csrf
+
+
 <div class="row">
 
     {{-- Employee --}}
@@ -7,7 +21,9 @@
             Employee
         </label>
 
-        <select name="employee_id" class="form-select">
+        <select
+            name="employee_id"
+            class="form-select @error('employee_id') is-invalid @enderror">
 
             <option value="">
                 Select Employee
@@ -29,14 +45,16 @@
 
         </select>
 
-
         @error('employee_id')
-            <span class="text-danger">
+
+            <div class="text-danger mt-1">
                 {{ $message }}
-            </span>
+            </div>
+
         @enderror
 
     </div>
+
 
 
     {{-- Payroll Month --}}
@@ -46,24 +64,18 @@
             Payroll Month
         </label>
 
-
-        <input 
+        <input
             type="month"
             name="payroll_month"
-            class="form-control"
-            value="{{ old(
-                'payroll_month',
-                isset($payroll->payroll_month)
-                ? \Carbon\Carbon::parse($payroll->payroll_month)->format('Y-m')
-                : ''
-            ) }}"
-        >
-
+            class="form-control @error('payroll_month') is-invalid @enderror"
+            value="{{ old('payroll_month', isset($payroll->payroll_month) ? \Carbon\Carbon::parse($payroll->payroll_month)->format('Y-m') : '') }}">
 
         @error('payroll_month')
-            <span class="text-danger">
+
+            <div class="text-danger mt-1">
                 {{ $message }}
-            </span>
+            </div>
+
         @enderror
 
     </div>
@@ -77,18 +89,19 @@
             Basic Salary
         </label>
 
-        <input 
+        <input
             type="number"
             step="0.01"
             name="basic_salary"
-            class="form-control"
-            value="{{ old('basic_salary', $payroll->basic_salary ?? '') }}"
-        >
+            class="form-control @error('basic_salary') is-invalid @enderror"
+            value="{{ old('basic_salary', $payroll->basic_salary ?? '') }}">
 
         @error('basic_salary')
-            <span class="text-danger">
+
+            <div class="text-danger mt-1">
                 {{ $message }}
-            </span>
+            </div>
+
         @enderror
 
     </div>
@@ -102,13 +115,20 @@
             Allowance
         </label>
 
-        <input 
+        <input
             type="number"
             step="0.01"
             name="allowance"
-            class="form-control"
-            value="{{ old('allowance', $payroll->allowance ?? '') }}"
-        >
+            class="form-control @error('allowance') is-invalid @enderror"
+            value="{{ old('allowance', $payroll->allowance ?? '') }}">
+
+        @error('allowance')
+
+            <div class="text-danger mt-1">
+                {{ $message }}
+            </div>
+
+        @enderror
 
     </div>
 
@@ -121,32 +141,43 @@
             Bonus
         </label>
 
-        <input 
+        <input
             type="number"
             step="0.01"
             name="bonus"
-            class="form-control"
-            value="{{ old('bonus', $payroll->bonus ?? '') }}"
-        >
+            class="form-control @error('bonus') is-invalid @enderror"
+            value="{{ old('bonus', $payroll->bonus ?? '') }}">
+
+        @error('bonus')
+
+            <div class="text-danger mt-1">
+                {{ $message }}
+            </div>
+
+        @enderror
 
     </div>
-
-
-
-    {{-- Overtime --}}
+        {{-- Overtime --}}
     <div class="col-md-4 mb-3">
 
         <label class="form-label">
             Overtime
         </label>
 
-        <input 
+        <input
             type="number"
             step="0.01"
             name="overtime"
-            class="form-control"
-            value="{{ old('overtime', $payroll->overtime ?? '') }}"
-        >
+            class="form-control @error('overtime') is-invalid @enderror"
+            value="{{ old('overtime', $payroll->overtime ?? '') }}">
+
+        @error('overtime')
+
+            <div class="text-danger mt-1">
+                {{ $message }}
+            </div>
+
+        @enderror
 
     </div>
 
@@ -159,13 +190,20 @@
             Deduction
         </label>
 
-        <input 
+        <input
             type="number"
             step="0.01"
             name="deduction"
-            class="form-control"
-            value="{{ old('deduction', $payroll->deduction ?? '') }}"
-        >
+            class="form-control @error('deduction') is-invalid @enderror"
+            value="{{ old('deduction', $payroll->deduction ?? '') }}">
+
+        @error('deduction')
+
+            <div class="text-danger mt-1">
+                {{ $message }}
+            </div>
+
+        @enderror
 
     </div>
 
@@ -178,13 +216,20 @@
             Leave Deduction
         </label>
 
-        <input 
+        <input
             type="number"
             step="0.01"
             name="leave_deduction"
-            class="form-control"
-            value="{{ old('leave_deduction', $payroll->leave_deduction ?? '') }}"
-        >
+            class="form-control @error('leave_deduction') is-invalid @enderror"
+            value="{{ old('leave_deduction', $payroll->leave_deduction ?? '') }}">
+
+        @error('leave_deduction')
+
+            <div class="text-danger mt-1">
+                {{ $message }}
+            </div>
+
+        @enderror
 
     </div>
 
@@ -197,13 +242,20 @@
             Tax
         </label>
 
-        <input 
+        <input
             type="number"
             step="0.01"
             name="tax"
-            class="form-control"
-            value="{{ old('tax', $payroll->tax ?? '') }}"
-        >
+            class="form-control @error('tax') is-invalid @enderror"
+            value="{{ old('tax', $payroll->tax ?? '') }}">
+
+        @error('tax')
+
+            <div class="text-danger mt-1">
+                {{ $message }}
+            </div>
+
+        @enderror
 
     </div>
 
@@ -216,20 +268,29 @@
             Payment Status
         </label>
 
-        <select name="payment_status" class="form-select">
+        <select
+            name="payment_status"
+            class="form-select @error('payment_status') is-invalid @enderror">
 
             <option value="Pending"
-            {{ old('payment_status', $payroll->payment_status ?? '') == 'Pending' ? 'selected' : '' }}>
+                {{ old('payment_status', $payroll->payment_status ?? '') == 'Pending' ? 'selected' : '' }}>
                 Pending
             </option>
 
-
             <option value="Paid"
-            {{ old('payment_status', $payroll->payment_status ?? '') == 'Paid' ? 'selected' : '' }}>
+                {{ old('payment_status', $payroll->payment_status ?? '') == 'Paid' ? 'selected' : '' }}>
                 Paid
             </option>
 
         </select>
+
+        @error('payment_status')
+
+            <div class="text-danger mt-1">
+                {{ $message }}
+            </div>
+
+        @enderror
 
     </div>
 
@@ -242,31 +303,61 @@
             Payment Date
         </label>
 
-        <input 
+        <input
             type="date"
             name="payment_date"
-            class="form-control"
-            value="{{ old('payment_date', $payroll->payment_date ?? '') }}"
-        >
+            class="form-control @error('payment_date') is-invalid @enderror"
+            value="{{ old('payment_date', $payroll->payment_date ?? '') }}">
+
+        @error('payment_date')
+
+            <div class="text-danger mt-1">
+                {{ $message }}
+            </div>
+
+        @enderror
 
     </div>
-
-
-
-    {{-- Remarks --}}
+        {{-- Remarks --}}
     <div class="col-md-12 mb-3">
 
         <label class="form-label">
             Remarks
         </label>
 
-
-        <textarea 
+        <textarea
             name="remarks"
-            class="form-control"
-            rows="3">{{ old('remarks', $payroll->remarks ?? '') }}</textarea>
+            rows="3"
+            class="form-control @error('remarks') is-invalid @enderror"
+            placeholder="Enter remarks">{{ old('remarks', $payroll->remarks ?? '') }}</textarea>
+
+        @error('remarks')
+
+            <div class="text-danger mt-1">
+                {{ $message }}
+            </div>
+
+        @enderror
 
     </div>
 
-
 </div>
+
+
+
+<button type="submit" class="btn btn-primary">
+
+    {{ isset($payroll) ? 'Update Payroll' : 'Create Payroll' }}
+
+</button>
+
+
+<a href="{{ route('payrolls.index') }}"
+   class="btn btn-secondary">
+
+    Cancel
+
+</a>
+
+
+</form>
