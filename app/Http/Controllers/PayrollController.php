@@ -7,10 +7,41 @@ use App\Http\Requests\UpdatePayrollRequest;
 use App\Models\Employee;
 use App\Models\Payroll;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\DB;
 
-class PayrollController extends Controller
+class PayrollController extends Controller implements HasMiddleware
 {
+    // permission giving
+
+    public static function middleware(): array
+    {
+        return [
+
+            new Middleware(
+                'permission:view payrolls',
+                only: ['index', 'show']
+            ),
+
+            new Middleware(
+                'permission:create payrolls',
+                only: ['create', 'store']
+            ),
+
+            new Middleware(
+                'permission:edit payrolls',
+                only: ['edit', 'update']
+            ),
+
+            new Middleware(
+                'permission:delete payrolls',
+                only: ['destroy']
+            ),
+
+        ];
+    }
+
     /**
      * Display a listing of the resource.
      */

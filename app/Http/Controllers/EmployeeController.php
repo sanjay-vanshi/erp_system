@@ -8,9 +8,27 @@ use App\Models\Department;
 use App\Models\Designation;
 use App\Models\Employee;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class EmployeeController extends Controller
+class EmployeeController extends Controller implements HasMiddleware
 {
+    // middleware for all methods
+    public static function middleware(): array
+    {
+        return [
+
+            new Middleware('permission:view employees', only: ['index', 'show']),
+
+            new Middleware('permission:create employees', only: ['create', 'store']),
+
+            new Middleware('permission:edit employees', only: ['edit', 'update']),
+
+            new Middleware('permission:delete employees', only: ['destroy']),
+
+        ];
+    }
+
     /**
      * Display a listing of the resource.
      */

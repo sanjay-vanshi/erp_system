@@ -4,11 +4,43 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreRoleRequest;
 use App\Http\Requests\UpdateRoleRequest;
+use App\Models\Permission;
 use App\Models\Role;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class RoleController extends Controller
+class RoleController extends Controller implements HasMiddleware
 {
+    // permissions giving
+
+    public static function middleware(): array
+    {
+        return [
+
+            new Middleware(
+                'permission:view roles',
+                only: ['index', 'show']
+            ),
+
+            new Middleware(
+                'permission:create roles',
+                only: ['create', 'store']
+            ),
+
+            new Middleware(
+                'permission:edit roles',
+                only: ['edit', 'update']
+            ),
+
+            new Middleware(
+                'permission:delete roles',
+                only: ['destroy']
+            ),
+
+        ];
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -99,5 +131,31 @@ class RoleController extends Controller
         return redirect()
             ->route('roles.index')
             ->with('success', 'Role deleted successfully.');
+    }
+    // method for role permissions....
+
+    public function permissions(Role $role)
+    {
+        $permissions = Permission::orderBy('name')->get();
+
+        return view('roles.permissions', compact(
+            'role',
+            'permissions'
+        ));
+    }
+
+    //  method for updatePermission for role...
+    public function updatePermissions(Request $request, Role $role)
+    {
+        $role->permissions()->sync(
+            $request->permissions ?? []
+        );
+
+        return redirect()
+            ->route('roles.index')
+            ->with(
+                'success',
+                'Permissions assigned successfully.'
+            );
     }
 }

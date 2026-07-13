@@ -6,9 +6,39 @@ use App\Http\Requests\StoreDepartmentRequest;
 use App\Http\Requests\UpdateDepartmentRequest;
 use App\Models\Department;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class DepartmentController extends Controller
+class DepartmentController extends Controller implements HasMiddleware
 {
+    // permission giving to methods
+    public static function middleware(): array
+    {
+        return [
+
+            new Middleware(
+                'permission:view departments',
+                only: ['index', 'show']
+            ),
+
+            new Middleware(
+                'permission:create departments',
+                only: ['create', 'store']
+            ),
+
+            new Middleware(
+                'permission:edit departments',
+                only: ['edit', 'update']
+            ),
+
+            new Middleware(
+                'permission:delete departments',
+                only: ['destroy']
+            ),
+
+        ];
+    }
+
     /**
      * Display a listing of the resource.
      */

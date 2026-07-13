@@ -8,9 +8,39 @@ use App\Models\Employee;
 use App\Models\Leave;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class LeaveController extends Controller
+class LeaveController extends Controller implements HasMiddleware
 {
+    // giving permissions
+    public static function middleware(): array
+    {
+        return [
+
+            new Middleware(
+                'permission:view leaves',
+                only: ['index', 'show']
+            ),
+
+            new Middleware(
+                'permission:create leaves',
+                only: ['create', 'store']
+            ),
+
+            new Middleware(
+                'permission:edit leaves',
+                only: ['edit', 'update']
+            ),
+
+            new Middleware(
+                'permission:delete leaves',
+                only: ['destroy']
+            ),
+
+        ];
+    }
+
     /**
      * Display a listing of leaves.
      */

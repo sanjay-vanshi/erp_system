@@ -7,9 +7,39 @@ use App\Http\Requests\UpdateAttendanceRequest;
 use App\Models\Attendance;
 use App\Models\Employee;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class AttendanceController extends Controller
+class AttendanceController extends Controller implements HasMiddleware
 {
+    // permission giving...
+    public static function middleware(): array
+    {
+        return [
+
+            new Middleware(
+                'permission:view attendances',
+                only: ['index', 'show']
+            ),
+
+            new Middleware(
+                'permission:create attendances',
+                only: ['create', 'store']
+            ),
+
+            new Middleware(
+                'permission:edit attendances',
+                only: ['edit', 'update']
+            ),
+
+            new Middleware(
+                'permission:delete attendances',
+                only: ['destroy']
+            ),
+
+        ];
+    }
+
     /**
      * Display a listing of the resource.
      */

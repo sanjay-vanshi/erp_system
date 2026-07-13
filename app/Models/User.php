@@ -48,4 +48,18 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Employee::class);
     }
+
+    // permission check method
+    public function hasPermission($permission)
+    {
+        if (! $this->role) {
+
+            return false;
+
+        }
+
+        return $this->role
+            ->permissions
+            ->contains('name', $permission);
+    }
 }

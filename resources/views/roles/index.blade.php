@@ -134,7 +134,7 @@
                             </td>
 
                             <td>
-
+                                  
                                 <a
                                     href="{{ route('roles.show', $role) }}"
                                     class="btn btn-sm btn-info">
@@ -146,7 +146,10 @@
                                     class="btn btn-sm btn-warning">
                                     Edit
                                 </a>
-
+                                     <a href="{{ route('roles.permissions', $role->id) }}"
+                                  class="btn btn-primary btn-sm">
+                                   Permissions
+                                 </a>
                                 <form
                                     action="{{ route('roles.destroy', $role) }}"
                                     method="POST"

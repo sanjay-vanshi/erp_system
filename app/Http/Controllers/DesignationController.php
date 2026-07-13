@@ -6,9 +6,39 @@ use App\Http\Requests\StoreDesignationRequest;
 use App\Http\Requests\UpdateDesignationRequest;
 use App\Models\Designation;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class DesignationController extends Controller
+class DesignationController extends Controller implements HasMiddleware
 {
+    // giving permission
+    public static function middleware(): array
+    {
+        return [
+
+            new Middleware(
+                'permission:view designations',
+                only: ['index', 'show']
+            ),
+
+            new Middleware(
+                'permission:create designations',
+                only: ['create', 'store']
+            ),
+
+            new Middleware(
+                'permission:edit designations',
+                only: ['edit', 'update']
+            ),
+
+            new Middleware(
+                'permission:delete designations',
+                only: ['destroy']
+            ),
+
+        ];
+    }
+
     /**
      * Display a listing of the resource.
      */
