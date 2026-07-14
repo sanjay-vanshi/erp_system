@@ -23,36 +23,92 @@
     🏠 Dashboard
 </a>
 
-<a href="{{ route('departments.index') }}" class="text-white d-block mb-2">
+@if(Auth::user()->hasPermission('view departments'))
+
+<a href="{{ route('departments.index') }}"
+   class="text-white d-block mb-2">
+
     🏢 Departments
+
 </a>
 
-<a href="{{ route('designations.index') }}" class="text-white d-block mb-2">
-    💼 Designations
+@endif
+
+@if(Auth::user()->hasPermission('view designations'))
+
+<a href="{{ route('designations.index') }}"
+   class="text-white d-block mb-2">
+
+    🎯 Designations
+
 </a>
 
-<a href="{{ route('employees.index') }}" class="text-white d-block mb-2">
+@endif
+
+@if(Auth::user()->hasPermission('view employees'))
+
+<a href="{{ route('employees.index') }}"
+   class="text-white d-block mb-2">
+
     👨‍💼 Employees
+
 </a>
 
-<a href="{{ route('attendances.index') }}" class="text-white d-block mb-2">
+@endif
+
+@if(Auth::user()->hasPermission('view attendances'))
+
+<a href="{{ route('attendances.index') }}"
+   class="text-white d-block mb-2">
+
     🕒 Attendance
+
 </a>
 
-<a href="{{ route('leaves.index') }}" class="text-white d-block mb-2">
-    📝 Leave Management
+@endif
+
+@if(Auth::user()->hasPermission('view leaves'))
+
+<a href="{{ route('leaves.index') }}"
+   class="text-white d-block mb-2">
+
+    📅 Leaves
+
 </a>
 
-<a href="{{ route('payrolls.index') }}" class="text-white d-block mb-2">
-    💰 Payrolls
+@endif
+
+@if(Auth::user()->hasPermission('view payrolls'))
+
+<a href="{{ route('payrolls.index') }}"
+   class="text-white d-block mb-2">
+
+    💰 Payroll
+
 </a>
 
-<a href="{{ route('roles.index') }}" class="text-white d-block mb-2">
+@endif
+
+@if(Auth::user()->hasPermission('view roles'))
+
+<a href="{{ route('roles.index') }}"
+   class="text-white d-block mb-2">
+
     🔐 Roles
+
 </a>
-<a href="{{ route('users.index') }}" class="text-white d-block mb-2">
-    👤 User Management
+
+@endif
+@if(Auth::user()->hasPermission('view users'))
+
+<a href="{{ route('users.index') }}"
+   class="text-white d-block mb-2">
+
+    👤 Users
+
 </a>
+
+@endif
     </div>
 
     <!-- Page Content -->

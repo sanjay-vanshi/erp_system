@@ -42,12 +42,12 @@
     <div class="card-header bg-white d-flex justify-content-between align-items-center">
 
         <h4 class="mb-0">Designation List</h4>
-
+       @if(Auth::user()->hasPermission('create designations'))
         <a href="{{ route('designations.create') }}"
            class="btn btn-primary btn-sm">
             Add Designation
         </a>
-
+       @endif
     </div>
 
     <div class="card-body">
@@ -101,12 +101,14 @@
                         <td class="text-center">
 
                             
-
+                               @if(Auth::user()->hasPermission('edit designations'))
                                 <a href="{{ route('designations.edit', $designation->id) }}"
                                    class="btn btn-warning btn-sm">
                                     Edit
                                 </a>
+                                 @endif
 
+                                 @if(Auth::user()->hasPermission('delete designations'))
                                 <form action="{{ route('designations.destroy', $designation->id) }}"
                                       method="POST" class="d-inline">
 
@@ -124,7 +126,7 @@
 
                                 </form>
 
-                            
+                            @endif
 
                         </td>
 

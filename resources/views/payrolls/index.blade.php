@@ -10,10 +10,12 @@
 
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h2>Payroll List</h2>
+               @if(Auth::user()->hasPermission('create payrolls'))
 
         <a href="{{ route('payrolls.create') }}" class="btn btn-primary">
             Add Payroll
         </a>
+        @endif
     </div>
 
 
@@ -175,18 +177,23 @@
 
 
                     <td>
+                        @if(Auth::user()->hasPermission('view payrolls'))
 
                         <a href="{{ route('payrolls.show', $payroll) }}"
                            class="btn btn-info btn-sm">
                             View
                         </a>
 
+                          @endif
+
+                         @if(Auth::user()->hasPermission('edit payrolls'))
 
                         <a href="{{ route('payrolls.edit', $payroll) }}"
                            class="btn btn-warning btn-sm">
                             Edit
                         </a>
-
+                       @endif
+                     @if(Auth::user()->hasPermission('delete payrolls'))
 
                         <form action="{{ route('payrolls.destroy', $payroll) }}"
                               method="POST"
@@ -202,7 +209,7 @@
                             </button>
 
                         </form>
-
+                       @endif
 
                     </td>
 

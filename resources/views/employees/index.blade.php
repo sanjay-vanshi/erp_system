@@ -12,12 +12,12 @@
         <h4 class="mb-0">
             Employee List
         </h4>
-
+    @if(Auth::user()->hasPermission('create employees'))
         <a href="{{ route('employees.create') }}"
            class="btn btn-primary btn-sm">
             Add Employee
         </a>
-
+   @endif
     </div>
 
     <div class="card-body">
@@ -206,6 +206,7 @@
                         <td class="text-center">
 
                             <div class="d-flex justify-content-center gap-2">
+                                      @if(Auth::user()->hasPermission('edit employees'))
 
                                 <a href="{{ route('employees.edit', $employee->id) }}"
                                    class="btn btn-warning btn-sm">
@@ -213,6 +214,9 @@
                                     Edit
 
                                 </a>
+                                @endif
+
+                                    @if(Auth::user()->hasPermission('delete employees'))
 
                                 <form action="{{ route('employees.destroy', $employee->id) }}"
                                       method="POST">
@@ -229,7 +233,7 @@
                                     </button>
 
                                 </form>
-
+                              @endif
                             </div>
 
                         </td>

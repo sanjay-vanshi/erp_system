@@ -100,6 +100,7 @@
             Leave List
         </h4>
 
+           @if(Auth::user()->hasPermission('create leaves'))
 
         <a href="{{ route('leaves.create') }}"
            class="btn btn-primary btn-sm">
@@ -107,7 +108,7 @@
             Apply Leave
 
         </a>
-
+    @endif
 
     </div>
 
@@ -249,13 +250,15 @@
 
 
     {{-- View --}}
+        @if(Auth::user()->hasPermission('view leaves'))
+
     <a href="{{ route('leaves.show',$leave->id) }}"
        class="btn btn-info btn-sm">
 
         View
 
     </a>
-
+  @endif
 
 
     {{-- Approval Buttons --}}
@@ -294,18 +297,22 @@
 
 
     {{-- Edit --}}
+            @if(Auth::user()->hasPermission('edit leaves'))
+
     <a href="{{ route('leaves.edit',$leave->id) }}"
        class="btn btn-warning btn-sm">
 
         Edit
 
     </a>
-
+@endif
 
 
 
 
     {{-- Delete --}}
+            @if(Auth::user()->hasPermission('delete leaves'))
+
     <form action="{{ route('leaves.destroy',$leave->id) }}"
           method="POST"
           class="d-inline">
@@ -325,7 +332,7 @@
 
 
     </form>
-
+  @endif
 
 </td>
 

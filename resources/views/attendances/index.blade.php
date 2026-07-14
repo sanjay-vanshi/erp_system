@@ -10,12 +10,12 @@
     <div class="card-header bg-white d-flex justify-content-between align-items-center">
 
         <h4 class="mb-0">Attendance List</h4>
-
+  @if(Auth::user()->hasPermission('create attendances'))
         <a href="{{ route('attendances.create') }}"
            class="btn btn-primary btn-sm">
             Mark Attendance
         </a>
-
+@endif
     </div>
 
     {{-- Filter Section --}}
@@ -205,11 +205,13 @@
                         <td class="text-center">
 
                             
-
+                                 @if(Auth::user()->hasPermission('edit attendances'))
                                 <a href="{{ route('attendances.edit', $attendance->id) }}"
                                    class="btn btn-warning btn-sm">
                                     Edit
                                 </a>
+                                 @endif
+                                @if(Auth::user()->hasPermission('delete attendances'))
 
                                 <form
                                     action="{{ route('attendances.destroy', $attendance->id) }}"
@@ -228,7 +230,7 @@
                                     </button>
 
                                 </form>
-
+                          @endif
                             
 
                         </td>

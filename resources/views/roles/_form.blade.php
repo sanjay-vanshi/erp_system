@@ -97,6 +97,55 @@
         </div>
 
     @enderror
+    <hr>
+
+<h5 class="mb-3">
+    Assign Permissions
+</h5>
+
+<div class="row">
+
+    @foreach($permissions as $permission)
+
+        <div class="col-md-3 mb-2">
+
+            <div class="form-check">
+
+                <input
+                    type="checkbox"
+                    class="form-check-input"
+                    id="permission{{ $permission->id }}"
+                    name="permissions[]"
+                    value="{{ $permission->id }}"
+
+                    @checked(
+                        in_array(
+                            $permission->id,
+                            old(
+                                'permissions',
+                                isset($role)
+                                    ? $role->permissions->pluck('id')->toArray()
+                                    : []
+                            )
+                        )
+                    )
+                >
+
+                <label
+                    class="form-check-label"
+                    for="permission{{ $permission->id }}">
+
+                    {{ ucfirst($permission->name) }}
+
+                </label>
+
+            </div>
+
+        </div>
+
+    @endforeach
+
+</div>
 
 </div>
 

@@ -11,14 +11,14 @@
         <h2>
             User Management
         </h2>
-
+         @if(Auth::user()->hasPermission('create users'))
         <a href="{{ route('users.create') }}"
            class="btn btn-primary">
 
             Add User
 
         </a>
-
+       @endif
     </div>
         <div class="card mb-3">
 
@@ -228,21 +228,23 @@
                         </td>
 
                         <td>
-
+                                @if(Auth::user()->hasPermission('view users'))
                             <a href="{{ route('users.show', $user) }}"
                                class="btn btn-info btn-sm">
 
                                 View
 
                             </a>
+                              @endif
 
+                               @if(Auth::user()->hasPermission('edit users'))
                             <a href="{{ route('users.edit', $user) }}"
                                class="btn btn-warning btn-sm">
 
                                 Edit
 
                             </a>
-
+                            @endif
                         </td>
 
                     </tr>

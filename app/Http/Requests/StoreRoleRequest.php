@@ -39,6 +39,14 @@ class StoreRoleRequest extends FormRequest
                 'required',
                 'in:Active,Inactive',
             ],
+            'permissions' => [
+    'nullable',
+    'array',
+],
+
+'permissions.*' => [
+    'exists:permissions,id',
+],
         ];
     }
 }

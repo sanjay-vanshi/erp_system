@@ -69,22 +69,30 @@ class RoleController extends Controller implements HasMiddleware
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-        return view('roles.create');
-    }
+   public function create()
+{
+    $permissions = Permission::orderBy('name')->get();
+
+    return view('roles.create', compact('permissions'));
+}
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreRoleRequest $request)
-    {
-        Role::create($request->validated());
+   public function store(StoreRoleRequest $request)
+{
+    $data = $request->validated();
 
-        return redirect()
-            ->route('roles.index')
-            ->with('success', 'Role created successfully.');
-    }
+    $role = Role::create($data);
+
+    $role->permissions()->sync(
+        $request->permissions ?? []
+    );
+
+    return redirect()
+        ->route('roles.index')
+        ->with('success', 'Role created successfully.');
+}
 
     /**
      * Display the specified resource.
@@ -98,21 +106,32 @@ class RoleController extends Controller implements HasMiddleware
      * Show the form for editing the specified resource.
      */
     public function edit(Role $role)
-    {
-        return view('roles.edit', compact('role'));
-    }
+{
+    $permissions = Permission::orderBy('name')->get();
+
+    return view('roles.edit', compact(
+        'role',
+        'permissions'
+    ));
+}
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateRoleRequest $request, Role $role)
-    {
-        $role->update($request->validated());
+  public function update(UpdateRoleRequest $request, Role $role)
+{
+    $data = $request->validated();
 
-        return redirect()
-            ->route('roles.index')
-            ->with('success', 'Role updated successfully.');
-    }
+    $role->update($data);
+
+    $role->permissions()->sync(
+        $request->permissions ?? []
+    );
+
+    return redirect()
+        ->route('roles.index')
+        ->with('success', 'Role updated successfully.');
+}
 
     /**
      * Remove the specified resource from storage.

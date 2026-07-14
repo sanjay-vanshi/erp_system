@@ -11,6 +11,7 @@
             Permission Management
 
         </h2>
+        @if(Auth::user()->hasPermission('create permissions'))
 
         <a href="{{ route('permissions.create') }}"
            class="btn btn-primary">
@@ -18,7 +19,7 @@
             Add Permission
 
         </a>
-
+   @endif
     </div>
 
 
@@ -131,21 +132,25 @@
                         <td class="text-center">
 
                             <div class="d-flex justify-content-center gap-2">
-
+                                  @if(Auth::user()->hasPermission('view permissions'))
                                 <a href="{{ route('permissions.show', $permission->id) }}"
                                    class="btn btn-info btn-sm">
 
                                     Show
 
                                 </a>
+                               @endif
 
+                               @if(Auth::user()->hasPermission('edit permissions'))
                                 <a href="{{ route('permissions.edit', $permission->id) }}"
                                    class="btn btn-warning btn-sm">
 
                                     Edit
 
                                 </a>
+                                @endif
 
+                                @if(Auth::user()->hasPermission('delete permissions'))
                                 <form action="{{ route('permissions.destroy', $permission->id) }}"
                                       method="POST">
 
@@ -162,7 +167,7 @@
                                     </button>
 
                                 </form>
-
+                                 @endif
                             </div>
 
                         </td>

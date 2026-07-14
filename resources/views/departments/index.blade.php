@@ -41,9 +41,16 @@
 
           <h4 class="mb-0">Department List</h4>
 
-        <a href="{{ route('departments.create') }}" class="btn btn-primary btn-sm">
-            Add Department
-        </a>
+      @if(Auth::user()->hasPermission('create departments'))
+
+    <a href="{{ route('departments.create') }}"
+       class="btn btn-primary">
+
+        Add Department
+
+    </a>
+
+@endif
 
     </div>
 
@@ -88,24 +95,35 @@
 
     
 
-        <a href="{{ route('departments.edit', $department->id) }}"
-           class="btn btn-warning btn-sm">
-            Edit
-        </a>
+        @if(Auth::user()->hasPermission('edit departments'))
 
-        <form action="{{ route('departments.destroy', $department->id) }}"
-              method="POST" class="d-inline">
+    <a href="{{ route('departments.edit', $department->id) }}"
+       class="btn btn-warning btn-sm">
 
-            @csrf
-            @method('DELETE')
+        Edit
 
-            <button type="submit"
-                    class="btn btn-danger btn-sm"
-                    onclick="return confirm('Are you sure you want to delete this department?')">
-                Delete
-            </button>
+    </a>
 
-        </form>
+@endif
+
+        @if(Auth::user()->hasPermission('delete departments'))
+
+<form action="{{ route('departments.destroy', $department->id) }}"
+      method="POST">
+
+    @csrf
+    @method('DELETE')
+
+    <button class="btn btn-danger btn-sm"
+            onclick="return confirm('Are you sure you want to delete this department?')">
+
+        Delete
+
+    </button>
+
+</form>
+
+@endif
 
     </div>
 

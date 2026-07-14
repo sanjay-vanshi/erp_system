@@ -8,10 +8,11 @@
 
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h3>Roles</h3>
-
+          @if(Auth::user()->hasPermission('create roles'))
         <a href="{{ route('roles.create') }}" class="btn btn-primary">
             Add Role
         </a>
+        @endif
     </div>
 
     <div class="card shadow-sm mb-3">
@@ -134,22 +135,30 @@
                             </td>
 
                             <td>
-                                  
+                                   @if(Auth::user()->hasPermission('view roles'))
                                 <a
                                     href="{{ route('roles.show', $role) }}"
                                     class="btn btn-sm btn-info">
                                     View
                                 </a>
+                                 @endif
 
+                                  @if(Auth::user()->hasPermission('edit roles'))
                                 <a
                                     href="{{ route('roles.edit', $role) }}"
                                     class="btn btn-sm btn-warning">
                                     Edit
                                 </a>
+                                @endif
+
+                                 @if(Auth::user()->hasPermission('view permission'))
                                      <a href="{{ route('roles.permissions', $role->id) }}"
                                   class="btn btn-primary btn-sm">
                                    Permissions
                                  </a>
+                                 @endif
+
+                                  @if(Auth::user()->hasPermission('delete roles'))
                                 <form
                                     action="{{ route('roles.destroy', $role) }}"
                                     method="POST"
@@ -168,7 +177,7 @@
                                     </button>
 
                                 </form>
-
+                            @endif
                             </td>
 
                         </tr>
