@@ -6,6 +6,7 @@ use App\Http\Requests\StoreAttendanceRequest;
 use App\Http\Requests\UpdateAttendanceRequest;
 use App\Models\Attendance;
 use App\Models\Employee;
+use App\Services\ActivityLogger;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -107,13 +108,24 @@ class AttendanceController extends Controller implements HasMiddleware
      * Store a newly created resource in storage.
      */
     public function store(StoreAttendanceRequest $request)
-    {
-        Attendance::create($request->validated());
+{
+    $attendance = Attendance::create(
+        $request->validated()
+    );
 
-        return redirect()
-            ->route('attendances.index')
-            ->with('success', 'Attendance marked successfully.');
-    }
+
+    ActivityLogger::log(
+        'created',
+        'Attendance',
+        $attendance->id,
+        'Attendance created for employee ID '.$attendance->employee_id
+    );
+
+
+    return redirect()
+        ->route('attendances.index')
+        ->with('success', 'Attendance created successfully.');
+}
 
     /**
      * Display the specified resource.
@@ -139,24 +151,45 @@ class AttendanceController extends Controller implements HasMiddleware
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateAttendanceRequest $request, Attendance $attendance)
-    {
-        Attendance::update($request->validated());
+   public function update(UpdateAttendanceRequest $request, Attendance $attendance)
+{
+    $attendance->update(
+        $request->validated()
+    );
 
-        return redirect()
-            ->route('attendances.index')
-            ->with('success', 'Attendance updated successfully.');
-    }
+
+    ActivityLogger::log(
+        'updated',
+        'Attendance',
+        $attendance->id,
+        'Attendance updated for employee ID '.$attendance->employee_id
+    );
+
+
+    return redirect()
+        ->route('attendances.index')
+        ->with('success', 'Attendance updated successfully.');
+}
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Attendance $attendance)
-    {
-        $attendance->delete();
+   public function destroy(Attendance $attendance)
+{
 
-        return redirect()
-            ->route('attendances.index')
-            ->with('success', 'Attendance deleted successfully.');
-    }
+    ActivityLogger::log(
+        'deleted',
+        'Attendance',
+        $attendance->id,
+        'Attendance deleted for employee ID '.$attendance->employee_id
+    );
+
+
+    $attendance->delete();
+
+
+    return redirect()
+        ->route('attendances.index')
+        ->with('success', 'Attendance deleted successfully.');
+}
 }

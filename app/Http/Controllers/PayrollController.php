@@ -6,6 +6,7 @@ use App\Http\Requests\StorePayrollRequest;
 use App\Http\Requests\UpdatePayrollRequest;
 use App\Models\Employee;
 use App\Models\Payroll;
+use App\Services\ActivityLogger;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -109,7 +110,13 @@ class PayrollController extends Controller implements HasMiddleware
             - $data['tax'];
 
         DB::transaction(function () use ($data) {
-            Payroll::create($data);
+           $payroll =  Payroll::create($data);
+           ActivityLogger::log(
+        'created',
+        'Payroll',
+        $payroll->id,
+        'Payroll created for employee ID '.$payroll->employee_id
+    );
         });
 
         return redirect()
@@ -165,6 +172,12 @@ class PayrollController extends Controller implements HasMiddleware
 
         DB::transaction(function () use ($payroll, $data) {
             $payroll->update($data);
+             ActivityLogger::log(
+        'updated',
+        'Payroll',
+        $payroll->id,
+        'Payroll updated for employee ID '.$payroll->employee_id
+    );
         });
 
         return redirect()
@@ -175,12 +188,22 @@ class PayrollController extends Controller implements HasMiddleware
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Payroll $payroll)
-    {
-        $payroll->delete();
+   public function destroy(Payroll $payroll)
+{
 
-        return redirect()
-            ->route('payrolls.index')
-            ->with('success', 'Payroll deleted successfully.');
-    }
+    ActivityLogger::log(
+        'deleted',
+        'Payroll',
+        $payroll->id,
+        'Payroll deleted for employee ID '.$payroll->employee_id
+    );
+
+
+    $payroll->delete();
+
+
+    return redirect()
+        ->route('payrolls.index')
+        ->with('success', 'Payroll deleted successfully.');
+}
 }

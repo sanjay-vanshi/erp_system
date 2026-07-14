@@ -6,6 +6,7 @@ use App\Http\Requests\StoreRoleRequest;
 use App\Http\Requests\UpdateRoleRequest;
 use App\Models\Permission;
 use App\Models\Role;
+use App\Services\ActivityLogger;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -88,7 +89,12 @@ class RoleController extends Controller implements HasMiddleware
     $role->permissions()->sync(
         $request->permissions ?? []
     );
-
+   ActivityLogger::log(
+    'created',
+    'Role',
+    $role->id,
+    'Role '.$role->name.' created'
+);
     return redirect()
         ->route('roles.index')
         ->with('success', 'Role created successfully.');
@@ -118,15 +124,52 @@ class RoleController extends Controller implements HasMiddleware
     /**
      * Update the specified resource in storage.
      */
-  public function update(UpdateRoleRequest $request, Role $role)
+public function update(UpdateRoleRequest $request, Role $role)
 {
     $data = $request->validated();
 
+    // Store old permissions
+    $oldPermissions = $role->permissions()
+        ->pluck('permissions.id')
+        ->sort()
+        ->values()
+        ->toArray();
+
+    // Update role details
     $role->update($data);
 
-    $role->permissions()->sync(
-        $request->permissions ?? []
-    );
+    // New permissions
+    $newPermissions = collect($request->permissions ?? [])
+        ->sort()
+        ->values()
+        ->toArray();
+
+    // Update permissions
+    $role->permissions()->sync($newPermissions);
+
+    // Log if role fields changed
+    if ($role->wasChanged()) {
+
+        ActivityLogger::log(
+            'updated',
+            'Role',
+            $role->id,
+            'Role '.$role->name.' updated'
+        );
+
+    }
+
+    // Log if permissions changed
+    if ($oldPermissions != $newPermissions) {
+
+        ActivityLogger::log(
+            'permissions_updated',
+            'Role',
+            $role->id,
+            'Permissions updated for role '.$role->name
+        );
+
+    }
 
     return redirect()
         ->route('roles.index')
@@ -144,7 +187,12 @@ class RoleController extends Controller implements HasMiddleware
                 ->route('roles.index')
                 ->with('error', 'This role cannot be deleted because it is assigned to one or more users.');
         }
-
+           ActivityLogger::log(
+    'deleted',
+    'Role',
+    $role->id,
+    'Role '.$role->name.' deleted'
+);
         $role->delete();
 
         return redirect()

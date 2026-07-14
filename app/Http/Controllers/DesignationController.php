@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreDesignationRequest;
 use App\Http\Requests\UpdateDesignationRequest;
 use App\Models\Designation;
+use App\Services\ActivityLogger;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -72,15 +73,25 @@ class DesignationController extends Controller implements HasMiddleware
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreDesignationRequest $request)
-    {
+   public function store(StoreDesignationRequest $request)
+{
+    $designation = Designation::create(
+        $request->validated()
+    );
 
-        Designation::create($request->validated());
 
-        return redirect()
-            ->route('designations.index')
-            ->with('success', 'Designation created successfully.');
-    }
+    ActivityLogger::log(
+        'created',
+        'Designation',
+        $designation->id,
+        'Designation '.$designation->title.' created'
+    );
+
+
+    return redirect()
+        ->route('designations.index')
+        ->with('success', 'Designation created successfully.');
+}
 
     /**
      * Display the specified resource.
@@ -101,24 +112,45 @@ class DesignationController extends Controller implements HasMiddleware
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateDesignationRequest $request, Designation $designation)
-    {
-        $designation->update($request->validated());
+   public function update(UpdateDesignationRequest $request, Designation $designation)
+{
+    $designation->update(
+        $request->validated()
+    );
 
-        return redirect()
-            ->route('designations.index')
-            ->with('success', 'Designation updated successfully.');
-    }
+
+    ActivityLogger::log(
+        'updated',
+        'Designation',
+        $designation->id,
+        'Designation '.$designation->title.' updated'
+    );
+
+
+    return redirect()
+        ->route('designations.index')
+        ->with('success', 'Designation updated successfully.');
+}
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Designation $designation)
-    {
-        $designation->delete();
+   public function destroy(Designation $designation)
+{
 
-        return redirect()
-            ->route('designations.index')
-            ->with('success', 'Designation deleted successfully.');
-    }
+    ActivityLogger::log(
+        'deleted',
+        'Designation',
+        $designation->id,
+        'Designation '.$designation->title.' deleted'
+    );
+
+
+    $designation->delete();
+
+
+    return redirect()
+        ->route('designations.index')
+        ->with('success', 'Designation deleted successfully.');
+}
 }

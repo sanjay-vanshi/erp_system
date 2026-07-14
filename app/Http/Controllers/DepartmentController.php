@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreDepartmentRequest;
 use App\Http\Requests\UpdateDepartmentRequest;
 use App\Models\Department;
+use App\Services\ActivityLogger;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -70,14 +71,25 @@ class DepartmentController extends Controller implements HasMiddleware
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreDepartmentRequest $request)
-    {
-        Department::create($request->validated());
+   public function store(StoreDepartmentRequest $request)
+{
+    $department = Department::create(
+        $request->validated()
+    );
 
-        return redirect()
-            ->route('departments.index')
-            ->with('success', 'Department created successfully.');
-    }
+
+    ActivityLogger::log(
+        'created',
+        'Department',
+        $department->id,
+        'Department '.$department->name.' created'
+    );
+
+
+    return redirect()
+        ->route('departments.index')
+        ->with('success', 'Department created successfully.');
+}
 
     /**
      * Display the specified resource.
@@ -98,25 +110,45 @@ class DepartmentController extends Controller implements HasMiddleware
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateDepartmentRequest $request, Department $department)
-    {
-        $department->update($request->validated());
+   public function update(UpdateDepartmentRequest $request, Department $department)
+{
+    $department->update(
+        $request->validated()
+    );
 
-        return redirect()
-            ->route('departments.index')
-            ->with('success', 'Department updated successfully!');
 
-    }
+    ActivityLogger::log(
+        'updated',
+        'Department',
+        $department->id,
+        'Department '.$department->name.' updated'
+    );
+
+
+    return redirect()
+        ->route('departments.index')
+        ->with('success', 'Department updated successfully.');
+}
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Department $department)
-    {
-        $department->delete();
+{
 
-        return redirect()
-            ->route('departments.index')
-            ->with('success', 'Department deleted successfully!');
-    }
+    ActivityLogger::log(
+        'deleted',
+        'Department',
+        $department->id,
+        'Department '.$department->name.' deleted'
+    );
+
+
+    $department->delete();
+
+
+    return redirect()
+        ->route('departments.index')
+        ->with('success', 'Department deleted successfully.');
+}
 }

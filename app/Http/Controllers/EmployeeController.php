@@ -10,6 +10,7 @@ use App\Models\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use App\Services\ActivityLogger;
 
 class EmployeeController extends Controller implements HasMiddleware
 {
@@ -90,14 +91,22 @@ class EmployeeController extends Controller implements HasMiddleware
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreEmployeeRequest $request)
-    {
-        Employee::create($request->validated());
+        public function store(StoreEmployeeRequest $request)
+        {
+           $employee =  Employee::create($request->validated());
+            // activity logging
 
-        return redirect()
-            ->route('employees.index')
-            ->with('success', 'Employee created successfully.');
-    }
+            ActivityLogger::log(
+        'created',
+        'Employee',
+        $employee->id,
+        'Employee '.$employee->first_name.' '.$employee->last_name.' created'
+    );
+
+            return redirect()
+                ->route('employees.index')
+                ->with('success', 'Employee created successfully.');
+        }
 
     /**
      * Display the specified resource.
@@ -128,7 +137,14 @@ class EmployeeController extends Controller implements HasMiddleware
     public function update(UpdateEmployeeRequest $request, Employee $employee)
     {
         $employee->update($request->validated());
+//  activit log
 
+ActivityLogger::log(
+    'updated',
+    'Employee',
+    $employee->id,
+    'Employee '.$employee->first_name.' '.$employee->last_name.' updated'
+);
         return redirect()
             ->route('employees.index')
             ->with('success', 'Employee updated successfully.');
@@ -138,7 +154,19 @@ class EmployeeController extends Controller implements HasMiddleware
      * Remove the specified resource from storage.
      */
     public function destroy(Employee $employee)
-    {
+    {  
+
+    // acitivity log 
+      ActivityLogger::log(
+    'deleted',
+    'Employee',
+    $employee->id,
+    'Employee '.$employee->first_name.' '.$employee->last_name.' deleted'
+);
+
+
+$employee->delete();
+
         $employee->delete();
 
         return redirect()
