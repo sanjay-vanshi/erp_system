@@ -212,17 +212,26 @@ public function update(UpdateRoleRequest $request, Role $role)
     }
 
     //  method for updatePermission for role...
-    public function updatePermissions(Request $request, Role $role)
-    {
-        $role->permissions()->sync(
-            $request->permissions ?? []
-        );
+   public function updatePermissions(Request $request, Role $role)
+{
+    $role->permissions()->sync(
+        $request->permissions ?? []
+    );
 
-        return redirect()
-            ->route('roles.index')
-            ->with(
-                'success',
-                'Permissions assigned successfully.'
-            );
-    }
+
+    ActivityLogger::log(
+        'permissions_updated',
+        'Role',
+        $role->id,
+        'Permissions updated for role '.$role->name
+    );
+
+
+    return redirect()
+        ->route('roles.index')
+        ->with(
+            'success',
+            'Permissions assigned successfully.'
+        );
+}
 }

@@ -99,12 +99,24 @@
 </a>
 
 @endif
+
 @if(Auth::user()->hasPermission('view users'))
 
 <a href="{{ route('users.index') }}"
    class="text-white d-block mb-2">
 
     👤 Users
+
+</a>
+
+@endif
+
+@if(Auth::user()->hasPermission('view activity logs'))
+
+<a href="{{ route('activity-logs.index') }}"
+   class="text-white d-block mb-2">
+
+    📋 Activity Logs
 
 </a>
 

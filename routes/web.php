@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ActivityLogController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DepartmentController;
@@ -33,6 +34,8 @@ Route::middleware('auth')->group(function () {
     Route::get('roles/{role}/permissions', [RoleController::class, 'permissions'])->name('roles.permissions');
 
     Route::post('roles/{role}/permissions', [RoleController::class, 'updatePermissions'])->name('roles.permissions.update');
+    Route::resource('activity-logs', ActivityLogController::class)
+    ->only(['index', 'show']);
 
 });
 
