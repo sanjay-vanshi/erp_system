@@ -110,13 +110,13 @@ class PayrollController extends Controller implements HasMiddleware
             - $data['tax'];
 
         DB::transaction(function () use ($data) {
-           $payroll =  Payroll::create($data);
-           ActivityLogger::log(
-        'created',
-        'Payroll',
-        $payroll->id,
-        'Payroll created for employee ID '.$payroll->employee_id
-    );
+            $payroll = Payroll::create($data);
+            ActivityLogger::log(
+                'created',
+                'Payroll',
+                $payroll->id,
+                'Payroll created for employee ID '.$payroll->employee_id
+            );
         });
 
         return redirect()
@@ -172,12 +172,12 @@ class PayrollController extends Controller implements HasMiddleware
 
         DB::transaction(function () use ($payroll, $data) {
             $payroll->update($data);
-             ActivityLogger::log(
-        'updated',
-        'Payroll',
-        $payroll->id,
-        'Payroll updated for employee ID '.$payroll->employee_id
-    );
+            ActivityLogger::log(
+                'updated',
+                'Payroll',
+                $payroll->id,
+                'Payroll updated for employee ID '.$payroll->employee_id
+            );
         });
 
         return redirect()
@@ -188,22 +188,20 @@ class PayrollController extends Controller implements HasMiddleware
     /**
      * Remove the specified resource from storage.
      */
-   public function destroy(Payroll $payroll)
-{
+    public function destroy(Payroll $payroll)
+    {
 
-    ActivityLogger::log(
-        'deleted',
-        'Payroll',
-        $payroll->id,
-        'Payroll deleted for employee ID '.$payroll->employee_id
-    );
+        ActivityLogger::log(
+            'deleted',
+            'Payroll',
+            $payroll->id,
+            'Payroll deleted for employee ID '.$payroll->employee_id
+        );
 
+        $payroll->delete();
 
-    $payroll->delete();
-
-
-    return redirect()
-        ->route('payrolls.index')
-        ->with('success', 'Payroll deleted successfully.');
-}
+        return redirect()
+            ->route('payrolls.index')
+            ->with('success', 'Payroll deleted successfully.');
+    }
 }

@@ -69,9 +69,12 @@ class PermissionSeeder extends Seeder
             'create permissions',
             'edit permissions',
             'delete permissions',
-            
+
             // Activity Logs
             'view activity logs',
+
+            // Reports
+            'view reports',
 
         ];
 

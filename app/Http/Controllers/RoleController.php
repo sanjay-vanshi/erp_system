@@ -70,35 +70,36 @@ class RoleController extends Controller implements HasMiddleware
     /**
      * Show the form for creating a new resource.
      */
-   public function create()
-{
-    $permissions = Permission::orderBy('name')->get();
+    public function create()
+    {
+        $permissions = Permission::orderBy('name')->get();
 
-    return view('roles.create', compact('permissions'));
-}
+        return view('roles.create', compact('permissions'));
+    }
 
     /**
      * Store a newly created resource in storage.
      */
-   public function store(StoreRoleRequest $request)
-{
-    $data = $request->validated();
+    public function store(StoreRoleRequest $request)
+    {
+        $data = $request->validated();
 
-    $role = Role::create($data);
+        $role = Role::create($data);
 
-    $role->permissions()->sync(
-        $request->permissions ?? []
-    );
-   ActivityLogger::log(
-    'created',
-    'Role',
-    $role->id,
-    'Role '.$role->name.' created'
-);
-    return redirect()
-        ->route('roles.index')
-        ->with('success', 'Role created successfully.');
-}
+        $role->permissions()->sync(
+            $request->permissions ?? []
+        );
+        ActivityLogger::log(
+            'created',
+            'Role',
+            $role->id,
+            'Role '.$role->name.' created'
+        );
+
+        return redirect()
+            ->route('roles.index')
+            ->with('success', 'Role created successfully.');
+    }
 
     /**
      * Display the specified resource.
@@ -112,69 +113,69 @@ class RoleController extends Controller implements HasMiddleware
      * Show the form for editing the specified resource.
      */
     public function edit(Role $role)
-{
-    $permissions = Permission::orderBy('name')->get();
+    {
+        $permissions = Permission::orderBy('name')->get();
 
-    return view('roles.edit', compact(
-        'role',
-        'permissions'
-    ));
-}
+        return view('roles.edit', compact(
+            'role',
+            'permissions'
+        ));
+    }
 
     /**
      * Update the specified resource in storage.
      */
-public function update(UpdateRoleRequest $request, Role $role)
-{
-    $data = $request->validated();
+    public function update(UpdateRoleRequest $request, Role $role)
+    {
+        $data = $request->validated();
 
-    // Store old permissions
-    $oldPermissions = $role->permissions()
-        ->pluck('permissions.id')
-        ->sort()
-        ->values()
-        ->toArray();
+        // Store old permissions
+        $oldPermissions = $role->permissions()
+            ->pluck('permissions.id')
+            ->sort()
+            ->values()
+            ->toArray();
 
-    // Update role details
-    $role->update($data);
+        // Update role details
+        $role->update($data);
 
-    // New permissions
-    $newPermissions = collect($request->permissions ?? [])
-        ->sort()
-        ->values()
-        ->toArray();
+        // New permissions
+        $newPermissions = collect($request->permissions ?? [])
+            ->sort()
+            ->values()
+            ->toArray();
 
-    // Update permissions
-    $role->permissions()->sync($newPermissions);
+        // Update permissions
+        $role->permissions()->sync($newPermissions);
 
-    // Log if role fields changed
-    if ($role->wasChanged()) {
+        // Log if role fields changed
+        if ($role->wasChanged()) {
 
-        ActivityLogger::log(
-            'updated',
-            'Role',
-            $role->id,
-            'Role '.$role->name.' updated'
-        );
+            ActivityLogger::log(
+                'updated',
+                'Role',
+                $role->id,
+                'Role '.$role->name.' updated'
+            );
 
+        }
+
+        // Log if permissions changed
+        if ($oldPermissions != $newPermissions) {
+
+            ActivityLogger::log(
+                'permissions_updated',
+                'Role',
+                $role->id,
+                'Permissions updated for role '.$role->name
+            );
+
+        }
+
+        return redirect()
+            ->route('roles.index')
+            ->with('success', 'Role updated successfully.');
     }
-
-    // Log if permissions changed
-    if ($oldPermissions != $newPermissions) {
-
-        ActivityLogger::log(
-            'permissions_updated',
-            'Role',
-            $role->id,
-            'Permissions updated for role '.$role->name
-        );
-
-    }
-
-    return redirect()
-        ->route('roles.index')
-        ->with('success', 'Role updated successfully.');
-}
 
     /**
      * Remove the specified resource from storage.
@@ -187,12 +188,12 @@ public function update(UpdateRoleRequest $request, Role $role)
                 ->route('roles.index')
                 ->with('error', 'This role cannot be deleted because it is assigned to one or more users.');
         }
-           ActivityLogger::log(
-    'deleted',
-    'Role',
-    $role->id,
-    'Role '.$role->name.' deleted'
-);
+        ActivityLogger::log(
+            'deleted',
+            'Role',
+            $role->id,
+            'Role '.$role->name.' deleted'
+        );
         $role->delete();
 
         return redirect()
@@ -212,26 +213,24 @@ public function update(UpdateRoleRequest $request, Role $role)
     }
 
     //  method for updatePermission for role...
-   public function updatePermissions(Request $request, Role $role)
-{
-    $role->permissions()->sync(
-        $request->permissions ?? []
-    );
-
-
-    ActivityLogger::log(
-        'permissions_updated',
-        'Role',
-        $role->id,
-        'Permissions updated for role '.$role->name
-    );
-
-
-    return redirect()
-        ->route('roles.index')
-        ->with(
-            'success',
-            'Permissions assigned successfully.'
+    public function updatePermissions(Request $request, Role $role)
+    {
+        $role->permissions()->sync(
+            $request->permissions ?? []
         );
-}
+
+        ActivityLogger::log(
+            'permissions_updated',
+            'Role',
+            $role->id,
+            'Permissions updated for role '.$role->name
+        );
+
+        return redirect()
+            ->route('roles.index')
+            ->with(
+                'success',
+                'Permissions assigned successfully.'
+            );
+    }
 }

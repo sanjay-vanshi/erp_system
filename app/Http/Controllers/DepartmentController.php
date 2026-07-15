@@ -71,25 +71,23 @@ class DepartmentController extends Controller implements HasMiddleware
     /**
      * Store a newly created resource in storage.
      */
-   public function store(StoreDepartmentRequest $request)
-{
-    $department = Department::create(
-        $request->validated()
-    );
+    public function store(StoreDepartmentRequest $request)
+    {
+        $department = Department::create(
+            $request->validated()
+        );
 
+        ActivityLogger::log(
+            'created',
+            'Department',
+            $department->id,
+            'Department '.$department->name.' created'
+        );
 
-    ActivityLogger::log(
-        'created',
-        'Department',
-        $department->id,
-        'Department '.$department->name.' created'
-    );
-
-
-    return redirect()
-        ->route('departments.index')
-        ->with('success', 'Department created successfully.');
-}
+        return redirect()
+            ->route('departments.index')
+            ->with('success', 'Department created successfully.');
+    }
 
     /**
      * Display the specified resource.
@@ -110,45 +108,41 @@ class DepartmentController extends Controller implements HasMiddleware
     /**
      * Update the specified resource in storage.
      */
-   public function update(UpdateDepartmentRequest $request, Department $department)
-{
-    $department->update(
-        $request->validated()
-    );
+    public function update(UpdateDepartmentRequest $request, Department $department)
+    {
+        $department->update(
+            $request->validated()
+        );
 
+        ActivityLogger::log(
+            'updated',
+            'Department',
+            $department->id,
+            'Department '.$department->name.' updated'
+        );
 
-    ActivityLogger::log(
-        'updated',
-        'Department',
-        $department->id,
-        'Department '.$department->name.' updated'
-    );
-
-
-    return redirect()
-        ->route('departments.index')
-        ->with('success', 'Department updated successfully.');
-}
+        return redirect()
+            ->route('departments.index')
+            ->with('success', 'Department updated successfully.');
+    }
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Department $department)
-{
+    {
 
-    ActivityLogger::log(
-        'deleted',
-        'Department',
-        $department->id,
-        'Department '.$department->name.' deleted'
-    );
+        ActivityLogger::log(
+            'deleted',
+            'Department',
+            $department->id,
+            'Department '.$department->name.' deleted'
+        );
 
+        $department->delete();
 
-    $department->delete();
-
-
-    return redirect()
-        ->route('departments.index')
-        ->with('success', 'Department deleted successfully.');
-}
+        return redirect()
+            ->route('departments.index')
+            ->with('success', 'Department deleted successfully.');
+    }
 }

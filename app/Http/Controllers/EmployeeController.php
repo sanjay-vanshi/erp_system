@@ -7,10 +7,10 @@ use App\Http\Requests\UpdateEmployeeRequest;
 use App\Models\Department;
 use App\Models\Designation;
 use App\Models\Employee;
+use App\Services\ActivityLogger;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
-use App\Services\ActivityLogger;
 
 class EmployeeController extends Controller implements HasMiddleware
 {
@@ -91,22 +91,22 @@ class EmployeeController extends Controller implements HasMiddleware
     /**
      * Store a newly created resource in storage.
      */
-        public function store(StoreEmployeeRequest $request)
-        {
-           $employee =  Employee::create($request->validated());
-            // activity logging
+    public function store(StoreEmployeeRequest $request)
+    {
+        $employee = Employee::create($request->validated());
+        // activity logging
 
-            ActivityLogger::log(
-        'created',
-        'Employee',
-        $employee->id,
-        'Employee '.$employee->first_name.' '.$employee->last_name.' created'
-    );
+        ActivityLogger::log(
+            'created',
+            'Employee',
+            $employee->id,
+            'Employee '.$employee->first_name.' '.$employee->last_name.' created'
+        );
 
-            return redirect()
-                ->route('employees.index')
-                ->with('success', 'Employee created successfully.');
-        }
+        return redirect()
+            ->route('employees.index')
+            ->with('success', 'Employee created successfully.');
+    }
 
     /**
      * Display the specified resource.
@@ -137,14 +137,15 @@ class EmployeeController extends Controller implements HasMiddleware
     public function update(UpdateEmployeeRequest $request, Employee $employee)
     {
         $employee->update($request->validated());
-//  activit log
+        //  activit log
 
-ActivityLogger::log(
-    'updated',
-    'Employee',
-    $employee->id,
-    'Employee '.$employee->first_name.' '.$employee->last_name.' updated'
-);
+        ActivityLogger::log(
+            'updated',
+            'Employee',
+            $employee->id,
+            'Employee '.$employee->first_name.' '.$employee->last_name.' updated'
+        );
+
         return redirect()
             ->route('employees.index')
             ->with('success', 'Employee updated successfully.');
@@ -154,18 +155,17 @@ ActivityLogger::log(
      * Remove the specified resource from storage.
      */
     public function destroy(Employee $employee)
-    {  
+    {
 
-    // acitivity log 
-      ActivityLogger::log(
-    'deleted',
-    'Employee',
-    $employee->id,
-    'Employee '.$employee->first_name.' '.$employee->last_name.' deleted'
-);
+        // acitivity log
+        ActivityLogger::log(
+            'deleted',
+            'Employee',
+            $employee->id,
+            'Employee '.$employee->first_name.' '.$employee->last_name.' deleted'
+        );
 
-
-$employee->delete();
+        $employee->delete();
 
         $employee->delete();
 

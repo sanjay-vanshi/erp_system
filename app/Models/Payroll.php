@@ -17,7 +17,7 @@ class Payroll extends Model
         'leave_deduction',
         'tax',
         'net_salary',
-        'payment_status',
+        'status',
         'payment_date',
         'remarks',
     ];

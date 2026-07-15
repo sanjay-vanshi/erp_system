@@ -126,12 +126,13 @@ class UserController extends Controller implements HasMiddleware
         $data['name'] = $employee->first_name.' '.$employee->last_name;
 
         $user = User::create($data);
-         ActivityLogger::log(
-        'created',
-        'User',
-        $user->id,
-        'User '.$user->name.' created'
-    );
+        ActivityLogger::log(
+            'created',
+            'User',
+            $user->id,
+            'User '.$user->name.' created'
+        );
+
         return redirect()
             ->route('users.index')
             ->with('success', 'User created successfully.');
@@ -195,12 +196,13 @@ class UserController extends Controller implements HasMiddleware
         }
 
         $user->update($data);
-          ActivityLogger::log(
-        'updated',
-        'User',
-        $user->id,
-        'User '.$user->name.' updated'
-    );
+        ActivityLogger::log(
+            'updated',
+            'User',
+            $user->id,
+            'User '.$user->name.' updated'
+        );
+
         return redirect()
             ->route('users.index')
             ->with('success', 'User updated successfully.');
@@ -212,11 +214,12 @@ class UserController extends Controller implements HasMiddleware
     public function destroy(User $user)
     {
         ActivityLogger::log(
-        'deleted',
-        'User',
-        $user->id,
-        'User '.$user->name.' deleted'
-    );
+            'deleted',
+            'User',
+            $user->id,
+            'User '.$user->name.' deleted'
+        );
+
         return redirect()
             ->route('users.index')
             ->with('error', 'Users cannot be deleted. Please mark the user as Inactive instead.');

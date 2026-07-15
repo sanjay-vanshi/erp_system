@@ -10,6 +10,7 @@ use App\Http\Controllers\LeaveController;
 use App\Http\Controllers\PayrollController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -35,7 +36,61 @@ Route::middleware('auth')->group(function () {
 
     Route::post('roles/{role}/permissions', [RoleController::class, 'updatePermissions'])->name('roles.permissions.update');
     Route::resource('activity-logs', ActivityLogController::class)
-    ->only(['index', 'show']);
+        ->only(['index', 'show']);
+    Route::prefix('reports')
+        ->name('reports.')
+        ->group(function () {
+
+            Route::get('/', [ReportController::class, 'index'])
+                ->name('index');
+
+            Route::get('/employees', [ReportController::class, 'employeeReport'])
+                ->name('employees');
+
+            Route::get('/attendance', [ReportController::class, 'attendanceReport'])
+                ->name('attendance');
+
+            Route::get('/leaves', [ReportController::class, 'leaveReport'])
+                ->name('leaves');
+
+            Route::get('/payroll', [ReportController::class, 'payrollReport'])
+                ->name('payroll');
+
+        });
+
+    Route::get('reports/employees/export', [ReportController::class, 'exportEmployees'])
+        ->name('reports.employees.export');
+    Route::get(
+        'reports/attendance/export',
+        [ReportController::class, 'exportAttendance']
+    )->name('reports.attendance.export');
+
+    Route::get(
+        'reports/leaves/export',
+        [ReportController::class, 'exportLeave']
+    )
+        ->name('reports.leaves.export');
+    Route::get(
+        'reports/payroll/export',
+        [ReportController::class, 'exportPayroll']
+    )
+    ->name('reports.payroll.export');
+    Route::get(
+        'reports/employees/pdf',
+        [ReportController::class, 'exportEmployeePdf']
+    )->name('reports.employee.pdf');
+    Route::get(
+        'reports/attendance/pdf',
+        [ReportController::class, 'exportAttendancePdf']
+    )->name('reports.attendance.pdf');
+    Route::get(
+        'reports/leaves/pdf',
+        [ReportController::class, 'exportLeavePdf']
+    )->name('reports.leave.pdf');
+    Route::get(
+        'reports/payroll/pdf',
+        [ReportController::class, 'exportPayrollPdf']
+    )->name('reports.payroll.pdf');
 
 });
 

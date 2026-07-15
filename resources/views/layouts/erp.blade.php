@@ -7,6 +7,7 @@
 
     <!-- Bootstrap 5 CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
 
 </head>
 
@@ -15,114 +16,437 @@
 <div class="d-flex" id="wrapper">
 
     <!-- Sidebar -->
-    <div class="bg-dark text-white p-3" style="width: 250px; min-height: 100vh;">
 
-        <h4 class="text-center mb-4">ERP System</h4>
+<div class="bg-dark text-white p-3" style="width: 270px; min-height:100vh;">
 
-        <a href="{{ route('dashboard') }}" class="text-white d-block mb-2">
-    🏠 Dashboard
-</a>
 
-@if(Auth::user()->hasPermission('view departments'))
+    <h4 class="text-center mb-4">
+        ERP System
+    </h4>
 
-<a href="{{ route('departments.index') }}"
-   class="text-white d-block mb-2">
 
-    🏢 Departments
+    <!-- Dashboard -->
 
-</a>
+    <a href="{{ route('dashboard') }}"
+       class="text-white d-block mb-3 text-decoration-none">
 
-@endif
+        🏠 Dashboard
 
-@if(Auth::user()->hasPermission('view designations'))
+    </a>
 
-<a href="{{ route('designations.index') }}"
-   class="text-white d-block mb-2">
 
-    🎯 Designations
 
-</a>
+    <div class="accordion accordion-flush"
+         id="sidebarAccordion">
 
-@endif
 
-@if(Auth::user()->hasPermission('view employees'))
 
-<a href="{{ route('employees.index') }}"
-   class="text-white d-block mb-2">
+        <!-- Organization Management -->
 
-    👨‍💼 Employees
+        @if(
+            Auth::user()->hasPermission('view departments') ||
+            Auth::user()->hasPermission('view designations') ||
+            Auth::user()->hasPermission('view employees')
+        )
 
-</a>
+        <div class="accordion-item bg-dark">
 
-@endif
 
-@if(Auth::user()->hasPermission('view attendances'))
+            <h2 class="accordion-header">
 
-<a href="{{ route('attendances.index') }}"
-   class="text-white d-block mb-2">
 
-    🕒 Attendance
+                <button class="accordion-button collapsed bg-dark text-white shadow-none px-0"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#organizationMenu">
 
-</a>
+                    🏢 Organization Management
 
-@endif
+                </button>
 
-@if(Auth::user()->hasPermission('view leaves'))
 
-<a href="{{ route('leaves.index') }}"
-   class="text-white d-block mb-2">
+            </h2>
 
-    📅 Leaves
 
-</a>
 
-@endif
+            <div id="organizationMenu"
+                 class="accordion-collapse collapse"
+                 data-bs-parent="#sidebarAccordion">
 
-@if(Auth::user()->hasPermission('view payrolls'))
 
-<a href="{{ route('payrolls.index') }}"
-   class="text-white d-block mb-2">
+                <div class="accordion-body bg-dark p-2">
 
-    💰 Payroll
 
-</a>
+                    @if(Auth::user()->hasPermission('view departments'))
 
-@endif
+                    <a href="{{ route('departments.index') }}"
+                       class="text-white d-block mb-2 text-decoration-none">
 
-@if(Auth::user()->hasPermission('view roles'))
+                        🏢 Departments
 
-<a href="{{ route('roles.index') }}"
-   class="text-white d-block mb-2">
+                    </a>
 
-    🔐 Roles
+                    @endif
 
-</a>
 
-@endif
 
-@if(Auth::user()->hasPermission('view users'))
+                    @if(Auth::user()->hasPermission('view designations'))
 
-<a href="{{ route('users.index') }}"
-   class="text-white d-block mb-2">
+                    <a href="{{ route('designations.index') }}"
+                       class="text-white d-block mb-2 text-decoration-none">
 
-    👤 Users
+                        🎯 Designations
 
-</a>
+                    </a>
 
-@endif
+                    @endif
 
-@if(Auth::user()->hasPermission('view activity logs'))
 
-<a href="{{ route('activity-logs.index') }}"
-   class="text-white d-block mb-2">
 
-    📋 Activity Logs
+                    @if(Auth::user()->hasPermission('view employees'))
 
-</a>
+                    <a href="{{ route('employees.index') }}"
+                       class="text-white d-block mb-2 text-decoration-none">
 
-@endif
+                        👨‍💼 Employees
+
+                    </a>
+
+                    @endif
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+        @endif
+
+
+
+
+
+        <!-- HR Management -->
+
+        @if(
+            Auth::user()->hasPermission('view attendances') ||
+            Auth::user()->hasPermission('view leaves')
+        )
+
+        <div class="accordion-item bg-dark">
+
+
+            <h2 class="accordion-header">
+
+
+                <button class="accordion-button collapsed bg-dark text-white shadow-none px-0"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#hrMenu">
+
+
+                    👥 HR Management
+
+
+                </button>
+
+
+            </h2>
+
+
+
+            <div id="hrMenu"
+                 class="accordion-collapse collapse"
+                 data-bs-parent="#sidebarAccordion">
+
+
+                <div class="accordion-body bg-dark p-2">
+
+
+                    @if(Auth::user()->hasPermission('view attendances'))
+
+                    <a href="{{ route('attendances.index') }}"
+                       class="text-white d-block mb-2 text-decoration-none">
+
+                        🕒 Attendance
+
+                    </a>
+
+                    @endif
+
+
+
+                    @if(Auth::user()->hasPermission('view leaves'))
+
+                    <a href="{{ route('leaves.index') }}"
+                       class="text-white d-block mb-2 text-decoration-none">
+
+                        📅 Leaves
+
+                    </a>
+
+                    @endif
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+        @endif
+
+
+
+
+
+        <!-- Finance Management -->
+
+        @if(Auth::user()->hasPermission('view payrolls'))
+
+        <div class="accordion-item bg-dark">
+
+
+            <h2 class="accordion-header">
+
+
+                <button class="accordion-button collapsed bg-dark text-white shadow-none px-0"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#financeMenu">
+
+
+                    💰 Finance Management
+
+
+                </button>
+
+
+            </h2>
+
+
+
+            <div id="financeMenu"
+                 class="accordion-collapse collapse"
+                 data-bs-parent="#sidebarAccordion">
+
+
+                <div class="accordion-body bg-dark p-2">
+
+
+                    <a href="{{ route('payrolls.index') }}"
+                       class="text-white d-block mb-2 text-decoration-none">
+
+                        💰 Payroll
+
+                    </a>
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+        @endif
+
+
+
+
+
+        <!-- Administration -->
+
+        @if(
+            Auth::user()->hasPermission('view users') ||
+            Auth::user()->hasPermission('view roles') ||
+            Auth::user()->hasPermission('view permissions') ||
+            Auth::user()->hasPermission('view activity logs')
+        )
+
+        <div class="accordion-item bg-dark">
+
+
+            <h2 class="accordion-header">
+
+
+                <button class="accordion-button collapsed bg-dark text-white shadow-none px-0"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#adminMenu">
+
+
+                    🔐 Administration
+
+
+                </button>
+
+
+            </h2>
+
+
+
+            <div id="adminMenu"
+                 class="accordion-collapse collapse"
+                 data-bs-parent="#sidebarAccordion">
+
+
+                <div class="accordion-body bg-dark p-2">
+
+
+                    @if(Auth::user()->hasPermission('view users'))
+
+                    <a href="{{ route('users.index') }}"
+                       class="text-white d-block mb-2 text-decoration-none">
+
+                        👤 Users
+
+                    </a>
+
+                    @endif
+
+
+
+                    @if(Auth::user()->hasPermission('view roles'))
+
+                    <a href="{{ route('roles.index') }}"
+                       class="text-white d-block mb-2 text-decoration-none">
+
+                        🔐 Roles
+
+                    </a>
+
+                    @endif
+
+
+
+                    @if(Auth::user()->hasPermission('view permissions'))
+
+                    <a href="{{ route('permissions.index') }}"
+                       class="text-white d-block mb-2 text-decoration-none">
+
+                        🛡 Permissions
+
+                    </a>
+
+                    @endif
+
+
+
+                    @if(Auth::user()->hasPermission('view activity logs'))
+
+                    <a href="{{ route('activity-logs.index') }}"
+                       class="text-white d-block mb-2 text-decoration-none">
+
+                        📋 Activity Logs
+
+                    </a>
+
+                    @endif
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+        @endif
+
+
+
+
+
+        <!-- Reports -->
+
+        @if(Auth::user()->hasPermission('view reports'))
+
+        <div class="accordion-item bg-dark">
+
+
+            <h2 class="accordion-header">
+
+
+                <button class="accordion-button collapsed bg-dark text-white shadow-none px-0"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#reportsMenu">
+
+
+                    📊 Reports
+
+
+                </button>
+
+
+            </h2>
+
+
+
+            <div id="reportsMenu"
+                 class="accordion-collapse collapse"
+                 data-bs-parent="#sidebarAccordion">
+
+
+                <div class="accordion-body bg-dark p-2">
+
+
+                    <a href="{{ route('reports.employees') }}"
+                       class="text-white d-block mb-2 text-decoration-none">
+
+                        👨‍💼 Employee Report
+
+                    </a>
+
+
+                    <a href="{{ route('reports.attendance') }}"
+                       class="text-white d-block mb-2 text-decoration-none">
+
+                        🕒 Attendance Report
+
+                    </a>
+
+
+                    <a href="{{ route('reports.leaves') }}"
+                       class="text-white d-block mb-2 text-decoration-none">
+
+                        📅 Leave Report
+
+                    </a>
+
+
+                    <a href="{{ route('reports.payroll') }}"
+                       class="text-white d-block mb-2 text-decoration-none">
+
+                        💰 Payroll Report
+
+                    </a>
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+        @endif
+
+
     </div>
 
+
+</div>
+    
     <!-- Page Content -->
     <div class="flex-grow-1">
 
@@ -163,5 +487,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -99,7 +99,7 @@ class LeaveController extends Controller implements HasMiddleware
 
         $totalDays = Carbon::parse($request->from_date)
             ->diffInDays(Carbon::parse($request->to_date)) + 1;
-      $leave =  Leave::create([
+        $leave = Leave::create([
 
             'employee_id' => $request->employee_id,
 
@@ -118,11 +118,11 @@ class LeaveController extends Controller implements HasMiddleware
         ]);
 
         ActivityLogger::log(
-        'created',
-        'Leave',
-        $leave->id,
-        'Leave request created for employee ID '.$leave->employee_id
-    );
+            'created',
+            'Leave',
+            $leave->id,
+            'Leave request created for employee ID '.$leave->employee_id
+        );
 
         return redirect()
             ->route('leaves.index')
@@ -183,12 +183,12 @@ class LeaveController extends Controller implements HasMiddleware
             'remarks' => $request->remarks,
 
         ]);
- ActivityLogger::log(
-        'updated',
-        'Leave',
-        $leaf->id,
-        'Leave request updated for employee ID '.$leaf->employee_id
-    );
+        ActivityLogger::log(
+            'updated',
+            'Leave',
+            $leaf->id,
+            'Leave request updated for employee ID '.$leaf->employee_id
+        );
 
         return redirect()
             ->route('leaves.index')
@@ -201,12 +201,12 @@ class LeaveController extends Controller implements HasMiddleware
     public function destroy(Leave $leaf)
     {
 
-       ActivityLogger::log(
-        'deleted',
-        'Leave',
-        $leaf->id,
-        'Leave request deleted for employee ID '.$leaf->employee_id
-    );
+        ActivityLogger::log(
+            'deleted',
+            'Leave',
+            $leaf->id,
+            'Leave request deleted for employee ID '.$leaf->employee_id
+        );
         $leaf->delete();
 
         return redirect()
@@ -221,12 +221,13 @@ class LeaveController extends Controller implements HasMiddleware
             'status' => 'approved',
             'approved_by' => auth()->id(),
         ]);
-   ActivityLogger::log(
-    'approved',
-    'Leave',
-    $leaf->id,
-    'Leave approved for employee ID '.$leaf->employee_id
-);
+        ActivityLogger::log(
+            'approved',
+            'Leave',
+            $leaf->id,
+            'Leave approved for employee ID '.$leaf->employee_id
+        );
+
         return redirect()
             ->route('leaves.index')
             ->with('success', 'Leave approved successfully.');
@@ -243,12 +244,13 @@ class LeaveController extends Controller implements HasMiddleware
             'approved_by' => auth()->id(),
             'remarks' => $request->remarks,
         ]);
-         ActivityLogger::log(
-    'rejected',
-    'Leave',
-    $leaf->id,
-    'Leave rejected for employee ID '.$leaf->employee_id
-);
+        ActivityLogger::log(
+            'rejected',
+            'Leave',
+            $leaf->id,
+            'Leave rejected for employee ID '.$leaf->employee_id
+        );
+
         return redirect()
             ->route('leaves.index')
             ->with('success', 'Leave rejected successfully.');

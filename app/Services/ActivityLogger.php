@@ -6,14 +6,12 @@ use App\Models\ActivityLog;
 
 class ActivityLogger
 {
-
     public static function log(
         string $action,
         string $module,
         ?int $recordId = null,
         ?string $description = null
-    )
-    {
+    ) {
 
         ActivityLog::create([
 
@@ -30,5 +28,4 @@ class ActivityLogger
         ]);
 
     }
-
 }

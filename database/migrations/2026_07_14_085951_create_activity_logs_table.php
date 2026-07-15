@@ -14,22 +14,22 @@ return new class extends Migration
         Schema::create('activity_logs', function (Blueprint $table) {
             $table->id();
 
-    $table->foreignId('user_id')
-          ->nullable()
-          ->constrained()
-          ->nullOnDelete();
+            $table->foreignId('user_id')
+                ->nullable()
+                ->constrained()
+                ->nullOnDelete();
 
-    $table->string('action');
+            $table->string('action');
 
-    $table->string('module');
+            $table->string('module');
 
-    $table->unsignedBigInteger('record_id')
-          ->nullable();
+            $table->unsignedBigInteger('record_id')
+                ->nullable();
 
-    $table->text('description')
-          ->nullable();
+            $table->text('description')
+                ->nullable();
 
-    $table->timestamps();
+            $table->timestamps();
         });
     }
 
