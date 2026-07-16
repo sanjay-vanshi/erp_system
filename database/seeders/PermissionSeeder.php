@@ -76,11 +76,17 @@ class PermissionSeeder extends Seeder
             // Reports
             'view reports',
 
-            //holidays
+            // holidays
             'view holidays',
             'create holidays',
             'edit holidays',
             'delete holidays',
+
+            // employee documents
+            'view employee documents',
+            'create employee documents',
+            'edit employee documents',
+            'delete employee documents',
 
         ];
 

@@ -6,13 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Holiday extends Model
 {
-     protected $fillable = [
+    protected $fillable = [
         'name',
         'holiday_date',
         'description',
         'status',
     ];
-
 
     protected $casts = [
         'holiday_date' => 'date',

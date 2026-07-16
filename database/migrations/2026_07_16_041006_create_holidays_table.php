@@ -12,20 +12,20 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('holidays', function (Blueprint $table) {
-           $table->id();
+            $table->id();
 
             $table->string('name');
 
             $table->date('holiday_date');
 
             $table->text('description')
-                  ->nullable();
+                ->nullable();
 
             $table->enum('status', [
                 'active',
-                'inactive'
+                'inactive',
             ])
-            ->default('active');
+                ->default('active');
 
             $table->timestamps();
 

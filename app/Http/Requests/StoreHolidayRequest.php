@@ -22,27 +22,27 @@ class StoreHolidayRequest extends FormRequest
      */
     public function rules(): array
     {
-         return [
+        return [
 
             'name' => [
                 'required',
                 'string',
-                'max:255'
+                'max:255',
             ],
 
             'holiday_date' => [
                 'required',
-                'date'
+                'date',
             ],
 
             'description' => [
                 'nullable',
-                'string'
+                'string',
             ],
 
             'status' => [
                 'required',
-                'in:active,inactive'
+                'in:active,inactive',
             ],
 
         ];

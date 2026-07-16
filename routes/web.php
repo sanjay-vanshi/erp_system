@@ -6,6 +6,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\DesignationController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\EmployeeDocumentController;
 use App\Http\Controllers\HolidayController;
 use App\Http\Controllers\LeaveController;
 use App\Http\Controllers\PayrollController;
@@ -75,7 +76,7 @@ Route::middleware('auth')->group(function () {
         'reports/payroll/export',
         [ReportController::class, 'exportPayroll']
     )
-    ->name('reports.payroll.export');
+        ->name('reports.payroll.export');
     Route::get(
         'reports/employees/pdf',
         [ReportController::class, 'exportEmployeePdf']
@@ -94,9 +95,13 @@ Route::middleware('auth')->group(function () {
     )->name('reports.payroll.pdf');
 
     Route::resource(
-    'holidays',
-    HolidayController::class
-);
+        'holidays',
+        HolidayController::class
+    );
+    Route::resource(
+        'employee-documents',
+        EmployeeDocumentController::class
+    );
 
 });
 

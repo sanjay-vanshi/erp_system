@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Holiday;
 use App\Http\Requests\StoreHolidayRequest;
 use App\Http\Requests\UpdateHolidayRequest;
+use App\Models\Holiday;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 
 class HolidayController extends Controller implements HasMiddleware
 {
-
     public static function middleware(): array
     {
         return [
@@ -20,7 +19,7 @@ class HolidayController extends Controller implements HasMiddleware
                 'permission:view holidays',
                 only: [
                     'index',
-                    'show'
+                    'show',
                 ]
             ),
 
@@ -28,7 +27,7 @@ class HolidayController extends Controller implements HasMiddleware
                 'permission:create holidays',
                 only: [
                     'create',
-                    'store'
+                    'store',
                 ]
             ),
 
@@ -36,20 +35,19 @@ class HolidayController extends Controller implements HasMiddleware
                 'permission:edit holidays',
                 only: [
                     'edit',
-                    'update'
+                    'update',
                 ]
             ),
 
             new Middleware(
                 'permission:delete holidays',
                 only: [
-                    'destroy'
+                    'destroy',
                 ]
             ),
 
         ];
     }
-
 
     /**
      * Display holiday list
@@ -59,10 +57,9 @@ class HolidayController extends Controller implements HasMiddleware
 
         $query = Holiday::query();
 
-
         // Search Holiday
 
-        if($request->search){
+        if ($request->search) {
 
             $query->where(
                 'name',
@@ -72,10 +69,9 @@ class HolidayController extends Controller implements HasMiddleware
 
         }
 
-
         // Year Filter
 
-        if($request->year){
+        if ($request->year) {
 
             $query->whereYear(
                 'holiday_date',
@@ -84,12 +80,10 @@ class HolidayController extends Controller implements HasMiddleware
 
         }
 
-
         $holidays = $query
             ->latest('holiday_date')
             ->paginate(10)
             ->withQueryString();
-
 
         return view(
             'holidays.index',
@@ -98,8 +92,6 @@ class HolidayController extends Controller implements HasMiddleware
 
     }
 
-
-
     /**
      * Create holiday form
      */
@@ -107,9 +99,6 @@ class HolidayController extends Controller implements HasMiddleware
     {
         return view('holidays.create');
     }
-
-
-
 
     /**
      * Store holiday
@@ -121,7 +110,6 @@ class HolidayController extends Controller implements HasMiddleware
             $request->validated()
         );
 
-
         return redirect()
             ->route('holidays.index')
             ->with(
@@ -130,9 +118,6 @@ class HolidayController extends Controller implements HasMiddleware
             );
 
     }
-
-
-
 
     /**
      * Show holiday
@@ -145,9 +130,6 @@ class HolidayController extends Controller implements HasMiddleware
         );
     }
 
-
-
-
     /**
      * Edit form
      */
@@ -159,23 +141,17 @@ class HolidayController extends Controller implements HasMiddleware
         );
     }
 
-
-
-
-
     /**
      * Update holiday
      */
     public function update(
         UpdateHolidayRequest $request,
         Holiday $holiday
-    )
-    {
+    ) {
 
         $holiday->update(
             $request->validated()
         );
-
 
         return redirect()
             ->route('holidays.index')
@@ -186,10 +162,6 @@ class HolidayController extends Controller implements HasMiddleware
 
     }
 
-
-
-
-
     /**
      * Delete holiday
      */
@@ -197,7 +169,6 @@ class HolidayController extends Controller implements HasMiddleware
     {
 
         $holiday->delete();
-
 
         return redirect()
             ->route('holidays.index')
@@ -207,5 +178,4 @@ class HolidayController extends Controller implements HasMiddleware
             );
 
     }
-
 }

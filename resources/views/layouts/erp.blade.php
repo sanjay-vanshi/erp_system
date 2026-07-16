@@ -134,7 +134,11 @@
         @if(
             Auth::user()->hasPermission('view attendances') ||
             Auth::user()->hasPermission('view leaves') ||
-            Auth::user()->hasPermission('view holidays')
+            Auth::user()->hasPermission('view holidays')||
+            Auth::user()->hasPermission('view attendances') ||
+            Auth::user()->hasPermission('view leaves') ||
+            Auth::user()->hasPermission('view holidays') ||
+            Auth::user()->hasPermission('view employee documents')
         )
 
         <div class="accordion-item bg-dark">
@@ -197,6 +201,17 @@
                     class="text-white d-block mb-2 text-decoration-none">
 
                                 🎉 Holidays
+
+</a>
+
+@endif
+{{-- employee documents --}}
+@if(Auth::user()->hasPermission('view employee documents'))
+
+<a href="{{ route('employee-documents.index') }}"
+class="text-white d-block mb-2 text-decoration-none">
+
+📁 Employee Documents
 
 </a>
 
