@@ -76,6 +76,12 @@ class PermissionSeeder extends Seeder
             // Reports
             'view reports',
 
+            //holidays
+            'view holidays',
+            'create holidays',
+            'edit holidays',
+            'delete holidays',
+
         ];
 
         foreach ($permissions as $permission) {

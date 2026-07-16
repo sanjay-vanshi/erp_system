@@ -133,7 +133,8 @@
 
         @if(
             Auth::user()->hasPermission('view attendances') ||
-            Auth::user()->hasPermission('view leaves')
+            Auth::user()->hasPermission('view leaves') ||
+            Auth::user()->hasPermission('view holidays')
         )
 
         <div class="accordion-item bg-dark">
@@ -189,6 +190,17 @@
                     </a>
 
                     @endif
+
+                    @if(Auth::user()->hasPermission('view holidays'))
+
+                      <a href="{{ route('holidays.index') }}"
+                    class="text-white d-block mb-2 text-decoration-none">
+
+                                🎉 Holidays
+
+</a>
+
+@endif
 
 
                 </div>
