@@ -3,7 +3,9 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>ERP System</title>
+   <title>
+    {{ $companySetting->company_name ?? 'ERP System' }}
+</title>
 
     <!-- Bootstrap 5 CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -20,9 +22,31 @@
 <div class="bg-dark text-white p-3" style="width: 270px; min-height:100vh;">
 
 
-    <h4 class="text-center mb-4">
-        ERP System
-    </h4>
+   <div class="text-center mb-4">
+
+
+@if($companySetting && $companySetting->logo)
+
+<img 
+src="{{ asset('storage/'.$companySetting->logo) }}"
+width="90"
+height="90"
+class="rounded-circle mb-2"
+>
+
+
+@endif
+
+
+
+<h5>
+
+{{ $companySetting->company_name ?? 'ERP System' }}
+
+</h5>
+
+
+</div>
 
 
     <!-- Dashboard -->
@@ -132,12 +156,9 @@
         <!-- HR Management -->
 
         @if(
-            Auth::user()->hasPermission('view attendances') ||
-            Auth::user()->hasPermission('view leaves') ||
             Auth::user()->hasPermission('view holidays')||
             Auth::user()->hasPermission('view attendances') ||
             Auth::user()->hasPermission('view leaves') ||
-            Auth::user()->hasPermission('view holidays') ||
             Auth::user()->hasPermission('view employee documents')
         )
 
@@ -294,7 +315,8 @@ class="text-white d-block mb-2 text-decoration-none">
             Auth::user()->hasPermission('view users') ||
             Auth::user()->hasPermission('view roles') ||
             Auth::user()->hasPermission('view permissions') ||
-            Auth::user()->hasPermission('view activity logs')
+            Auth::user()->hasPermission('view activity logs')||
+            Auth::user()->hasPermission('view company settings')
         )
 
         <div class="accordion-item bg-dark">
@@ -376,8 +398,18 @@ class="text-white d-block mb-2 text-decoration-none">
                     </a>
 
                     @endif
+                    {{-- company settings --}}
 
+                      @if(Auth::user()->hasPermission('view company settings'))
 
+                   <a href="{{ route('company-settings.index') }}"
+                    class="text-white d-block mb-2 text-decoration-none">
+
+                     ⚙️ Company Settings
+
+                       </a>
+
+                       @endif
                 </div>
 
 
@@ -480,7 +512,11 @@ class="text-white d-block mb-2 text-decoration-none">
         <!-- Top Navbar -->
         <nav class="navbar navbar-light bg-light px-3 shadow-sm">
 
-            <span class="navbar-brand">ERP Dashboard</span>
+           <span class="navbar-brand">
+
+{{ $companySetting->company_name ?? 'ERP Dashboard' }}
+
+</span>
 
             <div>
                 <span class="me-3">{{ auth()->user()->name }}</span>

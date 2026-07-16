@@ -88,6 +88,10 @@ class PermissionSeeder extends Seeder
             'edit employee documents',
             'delete employee documents',
 
+            // company settings
+            'view company settings',
+            'edit company settings',
+
         ];
 
         foreach ($permissions as $permission) {

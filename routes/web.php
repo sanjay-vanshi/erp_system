@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ActivityLogController;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\CompanySettingController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\DesignationController;
@@ -102,6 +103,17 @@ Route::middleware('auth')->group(function () {
         'employee-documents',
         EmployeeDocumentController::class
     );
+    Route::get(
+        'company-settings',
+        [CompanySettingController::class, 'index']
+    )
+        ->name('company-settings.index');
+
+    Route::put(
+        'company-settings',
+        [CompanySettingController::class, 'update']
+    )
+        ->name('company-settings.update');
 
 });
 
