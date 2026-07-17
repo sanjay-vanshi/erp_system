@@ -1,5 +1,13 @@
 <x-guest-layout>
+     <div class="text-center mb-4">
+    <img src="{{ asset('storage/images/logo.jpg') }}"
+         alt="Company Logo"
+         width="130"
+         class="mb-3">
 
+    <h3 class="fw-bold">ERP Management System</h3>
+    <p class="text-muted">Sign in to continue</p>
+</div>
     <h3 class="text-center mb-4">
         Login
     </h3>
